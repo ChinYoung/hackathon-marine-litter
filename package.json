@@ -1,0 +1,17 @@
+{
+  "name": "hackathon-marine-litter",
+  "version": "1.0.0",
+  "description": "The game collects marine litter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hackathon",
+    "game",
+    "marine",
+    "litter"
+  ],
+  "author": "",
+  "license": "ISC"
+}
