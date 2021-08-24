@@ -4,6 +4,7 @@ import { setRequestAnimFrame } from './helper';
 import Waves from './waves';
 
 setRequestAnimFrame();
+const oceanDeepth = 60;
 
 const waves = new Waves();
 
@@ -14,7 +15,7 @@ function init() {
   const ctx = canvas.getContext('2d');
 
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
-  waves.init(ctx, { canvasWidth, canvasHeight });
+  waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
 
   loopDraw(ctx, { canvasWidth, canvasHeight });
 }
