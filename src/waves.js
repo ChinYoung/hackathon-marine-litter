@@ -85,18 +85,18 @@ class Waves {
   draw() {
     const { ctx } = this;
 
-    if (this.nowRange <= this.rangeValue) {
-      this.nowRange += 1;
-    }
-    if (this.nowRange > this.rangeValue) {
-      this.nowRange -= 1;
-    }
+    // if (this.nowRange <= this.rangeValue) {
+    //   this.nowRange += 1;
+    // }
+    // if (this.nowRange > this.rangeValue) {
+    //   this.nowRange -= 1;
+    // }
     this.wave2.update({
-      nowRange: this.nowRange,
+      nowRange: this.rangeValue,
     });
     this.wave2.draw(ctx);
     this.wave1.update({
-      nowRange: this.nowRange,
+      nowRange: this.rangeValue,
     });
     this.wave1.draw(ctx);
   }
