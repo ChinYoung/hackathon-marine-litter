@@ -2,11 +2,14 @@
 import './css/index.scss';
 import { setRequestAnimFrame } from './helper';
 import Waves from './waves';
+import Hand from './hand';
 
 setRequestAnimFrame();
 const oceanDeepth = 60;
+const airRate = 40;
 
 const waves = new Waves();
+const hand = new Hand();
 
 window.onload = init;
 
@@ -16,6 +19,7 @@ function init() {
 
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
   waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
+  hand.init(ctx, { airRate, canvasHeight });
 
   loopDraw(ctx, { canvasWidth, canvasHeight });
 }
@@ -33,6 +37,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 
 function animate(params) {
   waves.draw();
+  hand.draw();
 }
 
 function initCanvas(canvas) {
