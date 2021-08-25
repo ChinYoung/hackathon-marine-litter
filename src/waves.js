@@ -57,10 +57,10 @@ class Wave {
 }
 
 class Waves {
-  init(ctx, { canvasWidth, canvasHeight }) {
+  init(ctx, { canvasWidth, canvasHeight, rangeValue }) {
     this.ctx = ctx;
     this.nowRange = 0;
-    this.rangeValue = 60;
+    this.rangeValue = rangeValue || 60;
 
     this.wave1 = new Wave({
       canvasWidth, // 轴长
