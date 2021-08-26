@@ -91,19 +91,29 @@ class Hands {
   speed = 0.05;
   peroid = 200;
 
+  handTypes = [
+    { imageX: 62, imageY: 80, rawHandWidth: 145, rawHandLength: 405 },
+    { imageX: 224, imageY: 190, rawHandWidth: 140, rawHandLength: 296 },
+    { imageX: 382, imageY: 62, rawHandWidth: 140, rawHandLength: 425 },
+    { imageX: 540, imageY: 140, rawHandWidth: 140, rawHandLength: 347 },
+  ]
+
   init(ctx, count = 10, { airRate, canvasWidth, canvasHeight }) {
     this.airRate = airRate;
     this.canvasHeight = canvasHeight;
     this.canvasWidth = canvasWidth;
 
-    const { list } = this;
+    const { list, handTypes } = this;
+    const { length } = list;
     const leftHandCount = Math.round(count / 2);
     const rightHandCount = Math.floor(count / 2);
     for (let i = 0; i < leftHandCount; i++) {
-      list.push(new Hand().init(ctx, { airRate, canvasHeight }));
+      const typeIndex = (Math.round(Math.random() * 10) + i) % 3;
+      list.push(new Hand().init(ctx, { airRate, canvasHeight }, handTypes[typeIndex]));
     }
     for (let j = 0; j < rightHandCount; j++) {
-      list.push(new Hand().init(ctx, { airRate, canvasHeight, x: canvasWidth, rotate: -90 }));
+      const typeIndex = (Math.round(Math.random() * 10) + j) % 3;
+      list.push(new Hand().init(ctx, { airRate, canvasHeight, x: canvasWidth, rotate: -90 }, handTypes[typeIndex]));
     }
   }
 

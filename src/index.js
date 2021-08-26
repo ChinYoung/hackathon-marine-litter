@@ -6,8 +6,8 @@ import Hands from './hands';
 import Robot from './robot';
 
 setRequestAnimFrame();
-const oceanDeepth = 60;
-const airRate = 40;
+const oceanDeepth = 70;
+const airRate = 30;
 
 let mouseX = 0;
 let mouseY = 0;
