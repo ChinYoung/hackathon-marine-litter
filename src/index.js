@@ -29,6 +29,10 @@ function init() {
   const ctx = canvas.getContext('2d');
 
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
+
+  const zrHandler = zrInit(canvas)
+  const fishManager = new FishManager(zrHandler, canvasWidth, canvasHeight)
+
   waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
@@ -41,18 +45,18 @@ function init() {
   addEvent(canvas);
 }
 
-function loopDraw(ctx, { canvasWidth, canvasHeight }) {
+function loopDraw(ctx, { canvasWidth, canvasHeight, fishManager }) {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
   let gapTime = !loopDraw.preTime ? 0 : new Date() - loopDraw.preTime;
   if (gapTime > 40) gapTime = 40;
   loopDraw.preTime = new Date();
 
-  animate(gapTime);
-  window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight }));
+  animate(gapTime, fishManager);
+  window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight, fishManager }));
 }
 
-function animate(gapTime) {
+function animate(gapTime, fishManager) {
   waves.draw();
   hands.draw(gapTime);
   kelps.draw();
