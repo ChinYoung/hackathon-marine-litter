@@ -2,14 +2,19 @@
 import './css/index.scss';
 import { setRequestAnimFrame } from './helper';
 import Waves from './waves';
-import Hand from './hand';
+import Hands from './hands';
+import Robot from './robot';
 
 setRequestAnimFrame();
 const oceanDeepth = 60;
 const airRate = 40;
 
+let mouseX = 0;
+let mouseY = 0;
+
 const waves = new Waves();
-const hand = new Hand();
+const hands = new Hands();
+const robot = new Robot();
 
 window.onload = init;
 
@@ -19,25 +24,29 @@ function init() {
 
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
   waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
-  hand.init(ctx, { airRate, canvasHeight });
+  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
+  robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
 
   loopDraw(ctx, { canvasWidth, canvasHeight });
+
+  addEvent(canvas);
 }
 
 function loopDraw(ctx, { canvasWidth, canvasHeight }) {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-  loopDraw.gapTime = new Date() - loopDraw.preTime;
-  if (loopDraw.gapTime > 40) loopDraw.gapTime = 40;
+  let gapTime = !loopDraw.preTime ? 0 : new Date() - loopDraw.preTime;
+  if (gapTime > 40) gapTime = 40;
   loopDraw.preTime = new Date();
 
-  animate();
+  animate(gapTime);
   window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight }));
 }
 
-function animate(params) {
+function animate(gapTime) {
   waves.draw();
-  hand.draw();
+  hands.draw(gapTime);
+  robot.draw(gapTime, { mouseX, mouseY });
 }
 
 function initCanvas(canvas) {
@@ -46,4 +55,20 @@ function initCanvas(canvas) {
   canvas.height = offsetHeight;
 
   return { canvasWidth: offsetWidth, canvasHeight: offsetHeight }
+}
+
+// 添加事件
+function addEvent(canvas) {
+  canvas.addEventListener('mousemove', handleMousemove, false);
+  canvas.addEventListener('touchmove', handleTouchmove, false);
+}
+
+function handleMousemove(e) {
+  mouseX = e.offsetX;
+  mouseY = e.offsetY;
+}
+
+function handleTouchmove(e) {
+  mouseX = e.touches[0].pageX;
+  mouseY = e.touches[0].pageY;
 }
