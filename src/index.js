@@ -5,6 +5,7 @@ import Waves from './waves';
 import Hands from './hands';
 import Robot from './robot';
 import Kelps from './kelps';
+import Trashs from './trashs';
 
 setRequestAnimFrame();
 const oceanDeepth = 70;
@@ -14,7 +15,8 @@ let mouseX = 0;
 let mouseY = 0;
 
 const waves = new Waves();
-const hands = new Hands();
+const trashs = new Trashs();
+const hands = new Hands(trashs);
 const robot = new Robot();
 const kelps = new Kelps();
 
@@ -28,7 +30,8 @@ function init() {
   waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
-  kelps.init(ctx, { canvasWidth, canvasHeight});
+  kelps.init(ctx, { canvasWidth, canvasHeight });
+  // trash.init(ctx);
 
   loopDraw(ctx, { canvasWidth, canvasHeight });
 
@@ -49,8 +52,10 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 function animate(gapTime) {
   waves.draw();
   hands.draw(gapTime);
-  robot.draw(gapTime, { mouseX, mouseY });
   kelps.draw();
+  robot.draw(gapTime, { mouseX, mouseY });
+  trashs.draw(gapTime);
+  // trash.takeout();
 }
 
 function initCanvas(canvas) {
