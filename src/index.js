@@ -2,73 +2,109 @@
 import './css/index.scss';
 import { setRequestAnimFrame } from './helper';
 import Waves from './waves';
-import Hands from './hands';
-import Robot from './robot';
+import Hand from './hands';
+import * as zrender from "zrender";
+import handsImage from "./images/hands.png";
+import canImage from "./images/can.png";
+import robotImage from "./images/robot.png";
 
 setRequestAnimFrame();
-const oceanDeepth = 60;
-const airRate = 40;
-
-let mouseX = 0;
-let mouseY = 0;
-
-const waves = new Waves();
-const hands = new Hands();
-const robot = new Robot();
 
 window.onload = init;
-
+const eleMap = {}
+const robotPosition = {
+  x: 0,
+  y: 0
+}
 function init() {
   const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
-  waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
-  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
-  robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
-
-  loopDraw(ctx, { canvasWidth, canvasHeight });
-
-  addEvent(canvas);
+  const zrHandler = zrender.init(canvas)
+  console.log("🚀 ~ file: index.js ~ line 23 ~ init ~ zrender", zrender)
+  let robot = eleMap['robot']
+  if (!robot) {
+    robot = new zrender.Image({
+      style: {
+        image: robotImage,
+        x: 0,
+        y: 0,
+        width: 225,
+        height: 56
+      },
+      zlevel: 1000
+    })
+    eleMap['robot'] = robot
+    zrHandler.add(robot)
+  }
+  canvas.addEventListener('mousemove', function (event) {
+    const { clientX, clientY, screenX, screenY, x, y, offsetX, offsetY } = event
+    drawRobot(zrHandler, offsetX, offsetY)
+  })
+  setInterval(() => {
+    playRobotAction(zrHandler)
+  }, 100);
+  const can = new zrender.Image({
+    style: {
+      image: canImage,
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100
+    },
+    zlevel: 100
+  })
+  zrHandler.add(can)
+  can.animateTo({
+    style: { x: 0, y: canvasHeight * 0.8, }
+  },
+    {
+      duration: 5000,
+      delay: 0,
+      easing: 'exponentialOut',
+      during: (cur) => { },
+      done: () => { }
+    }
+  )
 }
 
-function loopDraw(ctx, { canvasWidth, canvasHeight }) {
-  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-  let gapTime = !loopDraw.preTime ? 0 : new Date() - loopDraw.preTime;
-  if (gapTime > 40) gapTime = 40;
-  loopDraw.preTime = new Date();
-
-  animate(gapTime);
-  window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight }));
+let clipPathCounter = 0
+function playRobotAction(zrHandler) {
+  const { x, y } = robotPosition
+  clipPathCounter += 1
+  drawRobot(zrHandler, x, y)
 }
 
-function animate(gapTime) {
-  waves.draw();
-  hands.draw(gapTime);
-  robot.draw(gapTime, { mouseX, mouseY });
+function drawRobot(zrHandler, x, y) {
+  robotPosition.x = x
+  robotPosition.y = y
+  let robot = eleMap['robot']
+  if (!robot) {
+    robot = new zrender.Image({
+      style: {
+        image: robotImage,
+        x,
+        y,
+        width: 225,
+        height: 56
+      },
+      zlevel: 1000
+    })
+    eleMap['robot'] = robot
+    zrHandler.add(robot)
+  }
+  const newX = x - 28 - (clipPathCounter % 4) * 56
+  const newY = y - 28
+  const newClipX = newX + (clipPathCounter % 4) * 56
+  const path = zrender.path.createFromString(`M ${newClipX} ${newY} h 56 v 56 h -56 z`)
+  robot.setClipPath(path)
+  robot.attr({
+    style: { x: newX, y: newY },
+  })
 }
 
 function initCanvas(canvas) {
   let { offsetWidth, offsetHeight } = canvas.parentNode;
   canvas.width = offsetWidth;
   canvas.height = offsetHeight;
-
   return { canvasWidth: offsetWidth, canvasHeight: offsetHeight }
-}
-
-// 添加事件
-function addEvent(canvas) {
-  canvas.addEventListener('mousemove', handleMousemove, false);
-  canvas.addEventListener('touchmove', handleTouchmove, false);
-}
-
-function handleMousemove(e) {
-  mouseX = e.offsetX;
-  mouseY = e.offsetY;
-}
-
-function handleTouchmove(e) {
-  mouseX = e.touches[0].pageX;
-  mouseY = e.touches[0].pageY;
 }
