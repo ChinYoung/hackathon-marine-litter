@@ -5,7 +5,7 @@ class Kelp {
     this.width = width;
     this.height = height;
     this.ctx = ctx;
-    this.color = '#37524b';
+    this.color = '#f0cf69';
     this.alpha = 0.7;
     this.deltaTime = 0;
     this.quadraticEndX = 0;
@@ -33,7 +33,7 @@ class Kelp {
 }
 
 class Kelps {
-  
+
   init(ctx, { canvasWidth, canvasHeight}) {
     this.ctx = ctx;
     this.kelpList = [];

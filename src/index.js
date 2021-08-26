@@ -31,7 +31,6 @@ function init() {
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
-  // trash.init(ctx);
 
   loopDraw(ctx, { canvasWidth, canvasHeight });
 
@@ -53,9 +52,8 @@ function animate(gapTime) {
   waves.draw();
   hands.draw(gapTime);
   kelps.draw();
-  robot.draw(gapTime, { mouseX, mouseY });
   trashs.draw(gapTime);
-  // trash.takeout();
+  robot.draw(gapTime, { mouseX, mouseY });
 }
 
 function initCanvas(canvas) {

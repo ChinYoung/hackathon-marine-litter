@@ -1,24 +1,30 @@
-import robotImage from './images/robot.png';
 import { lerpAngle, lerpDistance } from './helper';
 class Robot {
   x = 0;
   y = 0;
   angle = 0;
-  image = new Image();
+  imageList = [];
+  curIndex = 0;
+  curTimeset = 0;
 
   init(ctx, { canvasWidth, canvasHeight, oceanDeepth }) {
     this.ctx = ctx;
-    this.image.src = robotImage;
     this.x = canvasWidth / 2;
     this.y = canvasHeight * (100 - oceanDeepth / 2) / 100;
     this.minY = canvasHeight * (1 - oceanDeepth / 100);
-    this.maxY = canvasHeight - 112 * 0.8;
+    this.maxY = canvasHeight - 188 * 0.5;
     this.minX = 0;
-    this.maxX = canvasWidth - 115 * 0.8;
+    this.maxX = canvasWidth - 170 * 0.5;
+
+    for (let i = 1; i < 3; i++) {
+      const img = new Image();
+      img.src = require('./images/robot_' + i + '.png').default;
+      this.imageList.push(img);
+    }
   }
 
   draw(gapTime, { mouseX, mouseY }) {
-    const { ctx } = this;
+    const { ctx, curIndex } = this;
     ctx.save();
     let betaAngle = Math.atan2(this.y - mouseY, this.x - mouseX);
     this.angle = lerpAngle(betaAngle, this.angle, 0.6);
@@ -33,7 +39,12 @@ class Robot {
     ctx.translate(this.x, this.y);
     // ctx.rotate(this.angle);
 
-    this.ctx.drawImage(this.image, 0, 0, 115, 112, 0, 0, 115 * 0.8, 112 * 0.8);
+    this.curTimeset += gapTime;
+    if (this.curTimeset % 100 > 60) {
+      this.curIndex = (curIndex + 1) % 2;
+    }
+
+    this.ctx.drawImage(this.imageList[this.curIndex], 18, 11, 170, 188, 0, 0, 170 * 0.5, 188 * 0.5);
     ctx.restore();
   }
 }
