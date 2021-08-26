@@ -7,11 +7,12 @@
 ### 元素
 - 海浪 (addy)
 - 水草 (leo)
-- 垃圾 
+- 垃圾 (addy)
 - 手 (addy)
 - 对话框 
 - 机器人 (addy)
 - 鱼群
+- 气泡
 
 ### 草图
 ![](./demands/draft_08.23.jpeg)

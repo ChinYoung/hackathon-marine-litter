@@ -1,4 +1,5 @@
 import handImage from './images/hands.png';
+import { Trash } from './trashs';
 
 class Hand {
   x = 0;
@@ -19,9 +20,16 @@ class Hand {
     rawHandLength: 405
   };
 
+  trashs;
+  trash;
+
+  constructor(trashs) {
+    this.trashs = trashs;
+  }
+
   init(
     ctx,
-    { airRate, x = 0, canvasHeight, rotate = 90 } = {},
+    { airRate, x = 0, canvasWidth, canvasHeight, rotate = 90 } = {},
     { imageX = 62, imageY = 80, rawHandWidth = 145, rawHandLength = 405 } = {},
     { peroid = 2000, speed = 0.05 } = {}
   ) {
@@ -29,6 +37,7 @@ class Hand {
     this.imageProperty = { imageX, imageY, rawHandLength, rawHandWidth };
     this.peroid = peroid;
     this.speed = speed;
+    this.canvasWidth = canvasWidth;
 
     const handWidth = rawHandWidth * this.imageScale;
     this.x = x;
@@ -55,16 +64,18 @@ class Hand {
   }
 
   draw(gapTime) {
-    const { ctx, image, x, y, positionY, imageScale, rotate, peroid } = this;
+    const { ctx, image, x, y, positionY, imageScale, rotate, peroid, canvasWidth } = this;
     this.timer += gapTime;
     if (this.timer < peroid) {
       return false;
     }
 
-    if (positionY > 0) {
+    if (positionY >= 0) {
       this.positionY = 0;
       this.reachOut = false;
       this.timer = 0;
+      this.trash = new Trash().init(ctx);
+      this.trashs.addTrash(this.trash);
     }
 
     const { imageX, imageY, rawHandWidth, rawHandLength } = this.imageProperty;
@@ -76,13 +87,14 @@ class Hand {
 
     this.positionY = !this.reachOut ? positionY - this.speed * gapTime : positionY + this.speed * gapTime;
 
+    ctx.drawImage(image, imageX, imageY, rawHandWidth, rawHandLength, 0, this.positionY, handWidth, handLength);
+    this.trash.takeout(this.positionY);
+    ctx.restore();
     if (this.positionY < -handLength) {
       this.positionY = -handLength;
       this.reachOut = true;
+      this.trash.beginDrop({ x: x === 0 ? handLength : canvasWidth - handLength, y });
     }
-
-    ctx.drawImage(image, imageX, imageY, rawHandWidth, rawHandLength, 0, this.positionY, handWidth, handLength);
-    ctx.restore();
   }
 }
 
@@ -90,20 +102,35 @@ class Hands {
   list = [];
   speed = 0.05;
   peroid = 200;
+  trashs = [];
+
+  handTypes = [
+    { imageX: 62, imageY: 80, rawHandWidth: 145, rawHandLength: 405 },
+    { imageX: 224, imageY: 190, rawHandWidth: 140, rawHandLength: 296 },
+    { imageX: 382, imageY: 62, rawHandWidth: 140, rawHandLength: 425 },
+    { imageX: 540, imageY: 140, rawHandWidth: 140, rawHandLength: 347 },
+  ]
+
+  constructor(trashs) {
+    this.trashs = trashs;
+  }
 
   init(ctx, count = 10, { airRate, canvasWidth, canvasHeight }) {
     this.airRate = airRate;
     this.canvasHeight = canvasHeight;
     this.canvasWidth = canvasWidth;
 
-    const { list } = this;
+    const { list, handTypes } = this;
+    const { length } = list;
     const leftHandCount = Math.round(count / 2);
     const rightHandCount = Math.floor(count / 2);
     for (let i = 0; i < leftHandCount; i++) {
-      list.push(new Hand().init(ctx, { airRate, canvasHeight }));
+      const typeIndex = (Math.round(Math.random() * 10) + i) % 3;
+      list.push(new Hand(this.trashs).init(ctx, { airRate, canvasHeight, canvasWidth }, handTypes[typeIndex]));
     }
     for (let j = 0; j < rightHandCount; j++) {
-      list.push(new Hand().init(ctx, { airRate, canvasHeight, x: canvasWidth, rotate: -90 }));
+      const typeIndex = (Math.round(Math.random() * 10) + j) % 3;
+      list.push(new Hand(this.trashs).init(ctx, { airRate, canvasHeight, canvasWidth, x: canvasWidth, rotate: -90 }, handTypes[typeIndex]));
     }
   }
 
