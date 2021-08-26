@@ -17,7 +17,7 @@ let mouseY = 0;
 const waves = new Waves();
 const trashs = new Trashs();
 const hands = new Hands(trashs);
-const robot = new Robot();
+const robot = new Robot(trashs);
 const kelps = new Kelps();
 
 window.onload = init;
@@ -54,6 +54,7 @@ function animate(gapTime) {
   kelps.draw();
   trashs.draw(gapTime);
   robot.draw(gapTime, { mouseX, mouseY });
+  robot.collectTrashs();
 }
 
 function initCanvas(canvas) {

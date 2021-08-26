@@ -63,8 +63,6 @@ class Trash {
 
     this.y = this.y + speed * gapTime;
 
-    if(this.y)
-
     ctx.drawImage(image, imageX, imageY, imageWidth, imageHeight, this.x, this.y, imageWidth * scale, imageHeight * scale);
   }
 }
@@ -74,6 +72,14 @@ class Trashs {
 
   addTrash(trash) {
     this.list.push(trash);
+  }
+
+  getList() {
+    return this.list;
+  }
+
+  setList(list) {
+    this.list = list;
   }
 
   draw(gapTime) {
