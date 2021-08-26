@@ -107,7 +107,6 @@ export class Fish {
       this.yDirection = yRandomValue > 0.5 ? 1 : -1
     }
     this.counter += 1
-    console.log("🚀 ~ file: fish.js ~ line 107 ~ Fish ~ move ~ this.counter", this.counter)
 
     this.x += (this.currentSpeedX) * (this.direction === LEFT ? -1 : 1)
     this.y += this.speedY * this.yDirection

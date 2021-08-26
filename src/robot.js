@@ -59,7 +59,7 @@ class Robot {
     const trashList = this.trashs.getList();
     const newTrashList = trashList.filter(item => {
       let gap = calLength2(item.x, item.y, this.x, this.y);
-      return gap >= 1500
+      return gap >= 4000
     });
 
     this.collectNum += trashList.length - newTrashList.length;

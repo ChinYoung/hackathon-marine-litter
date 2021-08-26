@@ -34,6 +34,7 @@ function init() {
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
+  trashs.init({ canvasWidth, canvasHeight });
 
   fishManager = new FishManager(ctx, canvasWidth, canvasHeight)
 
