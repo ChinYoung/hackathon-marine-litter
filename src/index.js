@@ -10,6 +10,7 @@ import { FishManager } from './fish';
 import Dusts from './dusts';
 import Bubbles from './bubbles';
 import Background from './background';
+import ProgressBar from './progress-bar';
 
 setRequestAnimFrame();
 const oceanDeepth = 70;
@@ -28,6 +29,7 @@ const kelps = new Kelps();
 const dusts = new Dusts();
 const bubbles = new Bubbles();
 const background = new Background();
+const progressBar = new ProgressBar();
 let fishManager
 
 window.onload = init;
@@ -46,6 +48,7 @@ function init() {
   dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   bubbles.init(ctx, kelps.kelpList, oceanDeepth);
   background.init(ctx, { canvasWidth, canvasHeight, airRate });
+  progressBar.init(ctx, { x: 0, y: airRate / 100 * canvasHeight + 15 });
 
   fishManager = new FishManager(ctx, canvasWidth, canvasHeight)
 
@@ -84,6 +87,7 @@ function animate(gapTime) {
   robot.collectTrashs();
   dusts.draw();
   bubbles.draw(bubblePointList);
+  gameStarted && progressBar.draw(seaClarity / 100);
 }
 
 function initCanvas(canvas) {
@@ -116,6 +120,6 @@ function handleTouchmove(e) {
   mouseY = e.touches[0].pageY;
 }
 
-function refreshClarity(){
+function refreshClarity() {
   seaClarity = 100 - 5 * trashs.getList().length;
 }
