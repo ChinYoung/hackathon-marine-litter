@@ -7,6 +7,9 @@ import Robot from './robot';
 import Kelps from './kelps';
 import Trashs from './trashs';
 import { FishManager } from './fish';
+import Dusts from './dusts';
+import Bubbles from './bubbles';
+import Background from './background';
 
 setRequestAnimFrame();
 const oceanDeepth = 70;
@@ -20,6 +23,9 @@ const trashs = new Trashs();
 const hands = new Hands(trashs);
 const robot = new Robot(trashs);
 const kelps = new Kelps();
+const dusts = new Dusts();
+const bubbles = new Bubbles();
+const background = new Background();
 let fishManager
 
 window.onload = init;
@@ -35,6 +41,9 @@ function init() {
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
   trashs.init({ canvasWidth, canvasHeight });
+  dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
+  bubbles.init(ctx, kelps.kelpList, oceanDeepth);
+  background.init(ctx,{canvasWidth, canvasHeight, airRate});
 
   fishManager = new FishManager(ctx, canvasWidth, canvasHeight)
 
@@ -49,19 +58,29 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
   let gapTime = !loopDraw.preTime ? 0 : new Date() - loopDraw.preTime;
   if (gapTime > 40) gapTime = 40;
   loopDraw.preTime = new Date();
-
+  window.gapTime = gapTime;
   animate(gapTime);
   window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight }));
 }
 
 function animate(gapTime) {
+  background.draw();
   waves.draw();
   hands.draw(gapTime);
-  kelps.draw();
+  let bubblePointList = [];
+  kelps.kelpList.forEach(item => {
+    item.draw()
+    bubblePointList.push({
+      x: item.quadraticEndX,
+      y: item.quadraticEndY
+    })
+  });
   fishManager.update()
   trashs.draw(gapTime);
   robot.draw(gapTime, { mouseX, mouseY });
   robot.collectTrashs();
+  dusts.draw();
+  bubbles.draw(bubblePointList);
 }
 
 function initCanvas(canvas) {
