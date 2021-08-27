@@ -9,6 +9,7 @@ class Hand {
   speed = 0.05;  // 伸手速度
   imageScale = 0.3;
   canvasHeight = 0;
+  canvasWidth = 0;
   timer = 0;
   peroid = 2000;
 
@@ -64,7 +65,7 @@ class Hand {
   }
 
   draw(gapTime) {
-    const { ctx, image, x, y, positionY, imageScale, rotate, peroid, canvasWidth } = this;
+    const { ctx, image, x, y, positionY, imageScale, rotate, peroid, canvasWidth, canvasHeight } = this;
     this.timer += gapTime;
     if (this.timer < peroid) {
       return false;
@@ -74,7 +75,7 @@ class Hand {
       this.positionY = 0;
       this.reachOut = false;
       this.timer = 0;
-      this.trash = new Trash().init(ctx);
+      this.trash = new Trash().init(ctx, { rotate, canvasHeight, canvasWidth });
       this.trashs.addTrash(this.trash);
     }
 

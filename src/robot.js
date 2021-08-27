@@ -1,4 +1,4 @@
-import { lerpAngle, lerpDistance } from './helper';
+import { lerpAngle, lerpDistance, calLength2 } from './helper';
 class Robot {
   x = 0;
   y = 0;
@@ -6,6 +6,13 @@ class Robot {
   imageList = [];
   curIndex = 0;
   curTimeset = 0;
+  collectNum = 0;
+
+  trashs;
+
+  constructor(trashs) {
+    this.trashs = trashs;
+  }
 
   init(ctx, { canvasWidth, canvasHeight, oceanDeepth }) {
     this.ctx = ctx;
@@ -46,6 +53,17 @@ class Robot {
 
     this.ctx.drawImage(this.imageList[this.curIndex], 18, 11, 170, 188, 0, 0, 170 * 0.5, 188 * 0.5);
     ctx.restore();
+  }
+
+  collectTrashs() {
+    const trashList = this.trashs.getList();
+    const newTrashList = trashList.filter(item => {
+      let gap = calLength2(item.x, item.y, this.x, this.y);
+      return gap >= 4000
+    });
+
+    this.collectNum += trashList.length - newTrashList.length;
+    this.trashs.setList(newTrashList);
   }
 }
 

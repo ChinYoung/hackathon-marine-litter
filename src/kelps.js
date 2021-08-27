@@ -5,7 +5,7 @@ class Kelp {
     this.width = width;
     this.height = height;
     this.ctx = ctx;
-    this.color = '#f0cf69';
+    this.color = '#37524b';
     this.alpha = 0.7;
     this.deltaTime = 0;
     this.quadraticEndX = 0;
