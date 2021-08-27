@@ -25,7 +25,8 @@ export class FishManager {
     this.maxFishGroupCount = 3
     this.chance = 40
     this.addFishGroupCounter = 0
-    this.addGroupGapBase = 600
+    this.initAddBaseTime = 1000
+    this.addGroupGapBase = this.initAddBaseTime
   }
 
   addFish() {
@@ -61,7 +62,7 @@ export class FishManager {
     })
     this.fishGroupList.push(newFishGroup)
     this.addFishGroupCounter += 1
-    this.addGroupGapBase = 600 + parseInt(Math.random() * 200)
+    this.addGroupGapBase = this.initAddBaseTime + parseInt(Math.random() * 200)
   }
 
 
