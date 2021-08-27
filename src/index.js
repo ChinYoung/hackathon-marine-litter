@@ -17,6 +17,7 @@ const airRate = 30;
 
 let mouseX = 0;
 let mouseY = 0;
+let gameStarted = false;
 
 const waves = new Waves();
 const trashs = new Trashs();
@@ -43,7 +44,7 @@ function init() {
   trashs.init({ canvasWidth, canvasHeight });
   dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   bubbles.init(ctx, kelps.kelpList, oceanDeepth);
-  background.init(ctx,{canvasWidth, canvasHeight, airRate});
+  background.init(ctx, { canvasWidth, canvasHeight, airRate });
 
   fishManager = new FishManager(ctx, canvasWidth, canvasHeight)
 
@@ -66,7 +67,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 function animate(gapTime) {
   background.draw();
   waves.draw();
-  hands.draw(gapTime);
+  gameStarted && hands.draw(gapTime);
   let bubblePointList = [];
   kelps.kelpList.forEach(item => {
     item.draw()
@@ -75,7 +76,7 @@ function animate(gapTime) {
       y: item.quadraticEndY
     })
   });
-  fishManager.update()
+  gameStarted && fishManager.update()
   trashs.draw(gapTime);
   robot.draw(gapTime, { mouseX, mouseY });
   robot.collectTrashs();
@@ -95,6 +96,12 @@ function initCanvas(canvas) {
 function addEvent(canvas) {
   canvas.addEventListener('mousemove', handleMousemove, false);
   canvas.addEventListener('touchmove', handleTouchmove, false);
+
+  const startDom = document.getElementById('start');
+  startDom.onclick = () => {
+    startDom.parentNode.classList.add("hide");
+    gameStarted = true;
+  }
 }
 
 function handleMousemove(e) {

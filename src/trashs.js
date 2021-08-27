@@ -116,7 +116,13 @@ class Trashs {
   }
 
   draw(gapTime) {
-    // this.list = this.list.filter(item => item.x > 0 && item.x < this.canvasWidth);
+    // filter trash which is out of boundary.
+    this.list = this.list.filter(item => {
+      const { imageProperty: { imageWidth, scale } } = item;
+
+      return !item.startX || (item.x > 0 && item.x < this.canvasWidth - imageWidth * scale)
+    });
+
     this.list.forEach(item => item.startX && item.startY && item.drop(gapTime));
   }
 }
