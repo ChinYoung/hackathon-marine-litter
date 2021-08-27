@@ -44,7 +44,7 @@ function init() {
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
-  trashs.init({ canvasWidth, canvasHeight });
+  trashs.init({ canvasWidth, canvasHeight, airRate });
   dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   bubbles.init(ctx, kelps.kelpList, oceanDeepth);
   background.init(ctx, { canvasWidth, canvasHeight, airRate });
@@ -121,5 +121,5 @@ function handleTouchmove(e) {
 }
 
 function refreshClarity() {
-  seaClarity = 100 - 5 * trashs.getDropingTrashCount();
+  seaClarity = 100 - 5 * trashs.getTrashCountInOcean();
 }

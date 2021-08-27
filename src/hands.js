@@ -65,7 +65,7 @@ class Hand {
   }
 
   draw(gapTime) {
-    const { ctx, image, x, y, positionY, imageScale, rotate, peroid, canvasWidth, canvasHeight } = this;
+    const { ctx, image, x, y, positionY, imageScale, rotate, peroid, canvasWidth, canvasHeight, airRate } = this;
     this.timer += gapTime;
     if (this.timer < peroid) {
       return false;

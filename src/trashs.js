@@ -99,8 +99,10 @@ class Trash {
 class Trashs {
   list = [];
 
-  init({ canvasWidth }) {
+  init({ canvasWidth, canvasHeight, airRate }) {
     this.canvasWidth = canvasWidth;
+    this.canvasHeight = canvasHeight;
+    this.airRate = airRate;
   }
 
   addTrash(trash) {
@@ -115,8 +117,9 @@ class Trashs {
     this.list = list;
   }
 
-  getDropingTrashCount() {
-    return this.list.filter(item => item.startX && item.startY).length;
+  getTrashCountInOcean() {
+    const { canvasHeight, airRate } = this;
+    return this.list.filter(item => item.startX && item.startY && item.y > canvasHeight * airRate / 100).length;
   }
 
   draw(gapTime) {
