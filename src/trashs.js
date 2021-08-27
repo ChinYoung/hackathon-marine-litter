@@ -115,6 +115,10 @@ class Trashs {
     this.list = list;
   }
 
+  getDropingTrashCount() {
+    return this.list.filter(item => item.startX && item.startY).length;
+  }
+
   draw(gapTime) {
     // filter trash which is out of boundary.
     this.list = this.list.filter(item => {

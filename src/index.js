@@ -121,5 +121,5 @@ function handleTouchmove(e) {
 }
 
 function refreshClarity() {
-  seaClarity = 100 - 5 * trashs.getList().length;
+  seaClarity = 100 - 5 * trashs.getDropingTrashCount();
 }
