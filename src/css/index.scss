@@ -5,14 +5,11 @@ html {
 }
 
 .wrapper {
-  font-size: 0;
   position: relative;
   height: 100vh;
   overflow: hidden;
   max-width: 700px;
   margin: 0 auto;
-  background: url("../images/bg.png");
-  background-size: 100% 100%;
 }
 
 #canvas {
@@ -20,4 +17,36 @@ html {
   left: 0;
   top: 0;
   z-index: 20;
+}
+
+.game-start {
+  color: #fff;
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  // background: url(./img/cover.png) no-repeat center;
+  // background-size: cover;
+}
+
+.game-start-button {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  font-size: 20px;
+  background: #fff;
+  color: #d42e2e;
+  font-weight: bold;
+  padding: 10px 30px;
+  border-radius: 5px;
+  transform: translateX(-50%);
+  box-shadow: 0 0 8px rgb(41 18 18 / 50%);
+  cursor: pointer;
+}
+
+.hide {
+  display: none !important;
 }

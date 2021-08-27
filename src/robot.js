@@ -46,12 +46,12 @@ class Robot {
     ctx.translate(this.x, this.y);
     // ctx.rotate(this.angle);
 
-    this.curTimeset += gapTime;
-    if (this.curTimeset % 100 > 60) {
-      this.curIndex = (curIndex + 1) % 2;
-    }
+    // this.curTimeset += gapTime;
+    // if (this.curTimeset % 100 > 60) {
+    //   this.curIndex = (curIndex + 1) % 2;
+    // }
 
-    this.ctx.drawImage(this.imageList[this.curIndex], 18, 11, 170, 188, 0, 0, 170 * 0.5, 188 * 0.5);
+    this.ctx.drawImage(this.imageList[this.curIndex], 18, 11, 170, 188, 0, 0, 170 * 0.4, 188 * 0.4);
     ctx.restore();
   }
 

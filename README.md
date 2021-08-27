@@ -22,5 +22,7 @@
 - 水质  (leo)
 - 海水圈渐变 （leo）
 
+- 输赢裁判系统 (addy)
+
 ### 草图
 ![](./demands/draft_08.23.jpeg)
