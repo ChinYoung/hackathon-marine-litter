@@ -35,8 +35,8 @@ class Robot {
     ctx.save();
     let betaAngle = Math.atan2(this.y - mouseY, this.x - mouseX);
     this.angle = lerpAngle(betaAngle, this.angle, 0.6);
-    this.x = lerpDistance(mouseX, this.x, 0.99);
-    this.y = lerpDistance(mouseY, this.y, 0.99);
+    this.x = lerpDistance(mouseX, this.x, 0.9);
+    this.y = lerpDistance(mouseY, this.y, 0.9);
 
     this.x = this.x < this.minX ? this.minX : this.x;
     this.x = this.x > this.maxX ? this.maxX : this.x;

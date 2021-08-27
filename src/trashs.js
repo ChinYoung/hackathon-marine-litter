@@ -38,6 +38,7 @@ class Trash {
   imageProperty = {};
   speed = 0.03;
   throwDirection = 'toLeft';
+  status = 'takeout';
 
   throwRate = Math.random() * 0.2;
   dropX = 0;
@@ -45,11 +46,12 @@ class Trash {
 
   hoverArea = 50 + Math.random() * 500;
 
-  init(ctx, { rotate, canvasHeight, canvasWidth }) {
+  init(ctx, { rotate, canvasHeight, canvasWidth }, status) {
     this.ctx = ctx;
     this.rotate = rotate;
     this.canvasHeight = canvasHeight;
     this.canvasWidth = canvasWidth;
+    this.status = status;
 
     const imageIndex = Math.round(Math.random() * 100) % 3;
     this.imageProperty = types[imageIndex];
@@ -58,7 +60,7 @@ class Trash {
   }
 
   takeout(positionY) {
-    if (!this.startX && !this.startY) {
+    if (this.status === 'takeout') {
       const { ctx, imageProperty, image } = this;
       const { imageX, imageY, imageWidth, imageHeight, scale } = imageProperty;
       ctx.drawImage(image, imageX, imageY, imageWidth, imageHeight, 0, positionY, imageWidth * scale, imageHeight * scale);
@@ -66,10 +68,32 @@ class Trash {
   }
 
   beginDrop({ x, y }) {
+    this.status = 'droping';
     this.startX = x;
     this.startY = y;
+    this.settle({ x, y });
+  }
+
+  settle({ x, y }) {
     this.x = x;
     this.y = y;
+  }
+
+  draw(gapTime) {
+    // having started position
+    if (this.status === 'droping') {
+      this.drop(gapTime)
+    }
+
+    if (this.status === 'static') {
+      this.stay();
+    }
+  }
+
+  stay() {
+    const { ctx, imageProperty, image } = this;
+    const { imageX, imageY, imageWidth, imageHeight, scale } = imageProperty;
+    ctx.drawImage(image, imageX, imageY, imageWidth, imageHeight, this.x, this.y, imageWidth * scale, imageHeight * scale);
   }
 
   drop(gapTime) {
@@ -99,10 +123,25 @@ class Trash {
 class Trashs {
   list = [];
 
-  init({ canvasWidth, canvasHeight, airRate }) {
+  init(ctx, { canvasWidth, canvasHeight, airRate }) {
+    this.ctx = ctx;
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.airRate = airRate;
+  }
+
+  initTrashs() {
+    const { ctx, canvasHeight, canvasWidth, airRate } = this;
+
+    Array(3).fill(0).forEach(() => {
+      const trash = new Trash().init(ctx, { canvasHeight, canvasWidth }, 'static');
+      const { imageWidth, imageHeight, scale } = trash.imageProperty;
+      const x = (canvasWidth - imageWidth * scale) * (1 - Math.random());
+      const yRangeStart = canvasHeight * (airRate + 30) / 100;
+      const y = yRangeStart + (canvasHeight - yRangeStart - imageHeight * scale) * (1 - Math.random());
+      trash.settle({ x, y })
+      this.list.push(trash);
+    })
   }
 
   addTrash(trash) {
@@ -117,9 +156,13 @@ class Trashs {
     this.list = list;
   }
 
+  empty() {
+    this.list = [];
+  }
+
   getTrashCountInOcean() {
     const { canvasHeight, airRate } = this;
-    return this.list.filter(item => item.startX && item.startY && item.y > canvasHeight * airRate / 100).length;
+    return this.list.filter(item => item.y > canvasHeight * airRate / 100).length;
   }
 
   draw(gapTime) {
@@ -130,7 +173,7 @@ class Trashs {
       return !item.startX || (item.x > 0 && item.x < this.canvasWidth - imageWidth * scale)
     });
 
-    this.list.forEach(item => item.startX && item.startY && item.drop(gapTime));
+    this.list.forEach(item => item.draw(gapTime));
   }
 }
 

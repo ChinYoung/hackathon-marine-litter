@@ -44,7 +44,7 @@ function init() {
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
-  trashs.init({ canvasWidth, canvasHeight, airRate });
+  trashs.init(ctx, { canvasWidth, canvasHeight, airRate });
   dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   bubbles.init(ctx, kelps.kelpList, oceanDeepth);
   background.init(ctx, { canvasWidth, canvasHeight, airRate });
@@ -66,6 +66,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
   window.gapTime = gapTime;
   animate(gapTime);
   refreshClarity();
+  judge();
   window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight }));
 }
 
@@ -107,6 +108,9 @@ function addEvent(canvas) {
   startDom.onclick = () => {
     startDom.parentNode.classList.add("hide");
     gameStarted = true;
+    seaClarity = 100;
+    trashs.empty();
+    trashs.initTrashs();
   }
 }
 
@@ -122,4 +126,24 @@ function handleTouchmove(e) {
 
 function refreshClarity() {
   seaClarity = 100 - 5 * trashs.getTrashCountInOcean();
+  seaClarity = seaClarity < 0 ? 0 : seaClarity;
+}
+
+function judge() {
+  let state = 'processing';
+
+  if (seaClarity === 0) {
+    state = 'failed';
+  }
+
+  if (seaClarity === 100) {
+    state = 'succeed'
+  }
+
+  if (state !== 'processing' && gameStarted !== false) {
+    gameStarted = false;
+    const startDom = document.getElementById('start');
+    const { classList } = startDom.parentNode;
+    classList.contains('hide') && classList.remove("hide");
+  }
 }
