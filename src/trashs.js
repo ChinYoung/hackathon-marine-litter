@@ -36,14 +36,14 @@ class Trash {
   startY = 0;
   image = new Image();
   imageProperty = {};
-  speed = 0.05;
+  speed = 0.03;
   throwDirection = 'toLeft';
 
   throwRate = Math.random() * 0.2;
   dropX = 0;
   dropY = 0;
 
-  hoverArea = 50 + Math.random() * 150;
+  hoverArea = 50 + Math.random() * 500;
 
   init(ctx, { rotate, canvasHeight, canvasWidth }) {
     this.ctx = ctx;
