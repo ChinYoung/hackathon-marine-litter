@@ -18,6 +18,7 @@ const airRate = 30;
 let mouseX = 0;
 let mouseY = 0;
 let gameStarted = false;
+let seaClarity = 100;
 
 const waves = new Waves();
 const trashs = new Trashs();
@@ -61,6 +62,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
   loopDraw.preTime = new Date();
   window.gapTime = gapTime;
   animate(gapTime);
+  refreshClarity();
   window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight }));
 }
 
@@ -112,4 +114,8 @@ function handleMousemove(e) {
 function handleTouchmove(e) {
   mouseX = e.touches[0].pageX;
   mouseY = e.touches[0].pageY;
+}
+
+function refreshClarity(){
+  seaClarity = 100 - 5 * trashs.getList().length;
 }
