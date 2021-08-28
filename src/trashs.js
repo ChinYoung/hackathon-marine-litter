@@ -81,7 +81,7 @@ class Trash {
 
   draw(gapTime) {
     // having started position
-    if (this.status === 'droping') {
+    if (this.status === 'droping' || this.status === 'done') {
       this.drop(gapTime)
     }
 
@@ -107,12 +107,14 @@ class Trash {
 
     // this.x += (this.rotate < 0 ? -speed * gapTime : speed * gapTime);
 
-    // 到达海底
+    // 是否到达海底
     if (this.y + this.hoverArea < this.canvasHeight) {
       this.dropX += (this.rotate < 0 ? -speed * gapTime : speed * gapTime);
       this.dropY = Math.pow(Math.abs(this.dropX), 2) * this.throwRate;
       this.y = this.startY + this.dropY;
       this.x += (this.rotate < 0 ? -speed * gapTime : speed * gapTime);
+    } else {
+      this.status = 'done';
     }
 
     ctx.drawImage(image, imageX, imageY, imageWidth, imageHeight, this.dropX, this.dropY, imageWidth * scale, imageHeight * scale);
@@ -128,17 +130,21 @@ class Trashs {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.airRate = airRate;
+    this.initTrashs();
   }
 
   initTrashs() {
     const { ctx, canvasHeight, canvasWidth, airRate } = this;
 
-    Array(3).fill(0).forEach(() => {
+    const hadInited = !!this.list.find(item => item.status === 'static');
+    if (hadInited) return;
+
+    Array(5).fill(0).forEach(() => {
       const trash = new Trash().init(ctx, { canvasHeight, canvasWidth }, 'static');
       const { imageWidth, imageHeight, scale } = trash.imageProperty;
       const x = (canvasWidth - imageWidth * scale) * (1 - Math.random());
       const yRangeStart = canvasHeight * (airRate + 30) / 100;
-      const y = yRangeStart + (canvasHeight - yRangeStart - imageHeight * scale) * (1 - Math.random());
+      const y = yRangeStart + (canvasHeight - yRangeStart - imageHeight * scale - 10) * (1 - Math.random());
       trash.settle({ x, y })
       this.list.push(trash);
     })
@@ -157,7 +163,15 @@ class Trashs {
   }
 
   empty() {
-    this.list = [];
+    this.list = this.list.filter(item => {
+      return item.status === 'takeout' || item.status === 'static';
+    });
+  }
+
+  emptyDroping() {
+    this.list = this.list.filter(item => {
+      return item.status !== 'droping';
+    });
   }
 
   getTrashCountInOcean() {

@@ -33,6 +33,12 @@ html {
   align-items: center;
 }
 
+.game-start.failed,
+.game-start.succeed {
+  color: #000;
+  background: transparent;
+}
+
 .game-start-button {
   position: absolute;
   bottom: 20%;
