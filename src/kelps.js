@@ -1,5 +1,5 @@
 class Kelp {
-  constructor({x, y, height, width = 15, ctx}) {
+  constructor({ x, y, height, width = 15, ctx }) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -12,9 +12,11 @@ class Kelp {
     this.quadraticEndY = 0;
   }
 
-  draw() {
-    let {x, ctx, height, width, color, alpha} = this;
-    this.deltaTime += 0.01;
+  draw(stopSwing = false) {
+    let { x, ctx, height, width, color, alpha } = this;
+    if (!stopSwing) {
+      this.deltaTime += 0.01;
+    }
     let sin = Math.sin(this.deltaTime);
     this.quadraticEndX = x + sin * 70;
     this.quadraticEndY = (ctx.canvas.height - height) + Math.abs(sin * 8);
@@ -25,6 +27,7 @@ class Kelp {
     ctx.lineCap = "round";
     ctx.beginPath();
     ctx.moveTo(x, ctx.canvas.height);
+    // ctx.lineTo(x, (ctx.canvas.height - height) * 1.18);
     ctx.quadraticCurveTo(x, (ctx.canvas.height - height) * 1.18, this.quadraticEndX, this.quadraticEndY);
     ctx.stroke(); // 进行绘制
     ctx.closePath();
@@ -34,7 +37,7 @@ class Kelp {
 
 class Kelps {
 
-  init(ctx, { canvasWidth, canvasHeight}) {
+  init(ctx, { canvasWidth, canvasHeight }) {
     this.ctx = ctx;
     this.kelpList = [];
     this.kelpNum = 60;
@@ -52,10 +55,10 @@ class Kelps {
     }
   }
 
-  draw() {
+  draw(stopSwing) {
     const { ctx } = this;
     for (let i = 0; i < this.kelpList.length; i++) {
-      this.kelpList[i].draw();
+      this.kelpList[i].draw(stopSwing);
     }
   }
 }

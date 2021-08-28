@@ -20,6 +20,7 @@ let mouseX = 0;
 let mouseY = 0;
 let gameStarted = false;
 let seaClarity = 100;
+let state = 'processing';
 
 const waves = new Waves();
 const trashs = new Trashs();
@@ -41,7 +42,7 @@ function init() {
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
 
   waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
-  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
+  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth }, seaClarity);
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
   trashs.init(ctx, { canvasWidth, canvasHeight, airRate });
@@ -72,23 +73,25 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 
 function animate(gapTime) {
   background.draw();
-  waves.draw(seaClarity);
-  gameStarted && hands.draw(gapTime);
+  waves.draw(seaClarity, state === 'failed');
+  gameStarted && hands.draw(gapTime, seaClarity);
   let bubblePointList = [];
   kelps.kelpList.forEach(item => {
-    item.draw()
+    item.draw(state === 'failed')
     bubblePointList.push({
       x: item.quadraticEndX,
       y: item.quadraticEndY
     })
   });
-  gameStarted && fishManager.update()
+
+  (gameStarted || ['succeed'].includes(state)) && fishManager.update(seaClarity)
+
   trashs.draw(gapTime);
-  gameStarted && progressBar.draw(seaClarity / 100);
+  (gameStarted || ['failed', 'succeed'].includes(state)) && progressBar.draw(seaClarity / 100);
   robot.draw(gapTime, { mouseX, mouseY });
   robot.collectTrashs();
-  dusts.draw();
-  bubbles.draw(bubblePointList);
+  state !== 'failed' && dusts.draw();
+  state !== 'failed' && bubbles.draw(bubblePointList);
 }
 
 function initCanvas(canvas) {
@@ -107,11 +110,28 @@ function addEvent(canvas) {
   const startDom = document.getElementById('start');
   startDom.onclick = () => {
     startDom.parentNode.classList.add("hide");
-    gameStarted = true;
-    seaClarity = 100;
-    trashs.empty();
-    trashs.initTrashs();
+    startGame()
   }
+
+  const startDomOnFailed = document.getElementById('failed-start');
+  startDomOnFailed.onclick = () => {
+    startDomOnFailed.parentNode.classList.add("hide");
+    startGame();
+  }
+
+  const startDomOnSucceed = document.getElementById('succeed-start');
+  startDomOnSucceed.onclick = () => {
+    startDomOnSucceed.parentNode.classList.add("hide");
+    startGame();
+  }
+}
+
+function startGame() {
+  gameStarted = true;
+  seaClarity = 100;
+  state = 'processing';
+  trashs.empty();
+  trashs.initTrashs();
 }
 
 function handleMousemove(e) {
@@ -130,8 +150,6 @@ function refreshClarity() {
 }
 
 function judge() {
-  let state = 'processing';
-
   if (seaClarity === 0) {
     state = 'failed';
   }
@@ -143,8 +161,18 @@ function judge() {
 
   if (state !== 'processing' && gameStarted !== false) {
     gameStarted = false;
-    const startDom = document.getElementById('start');
-    const { classList } = startDom.parentNode;
-    classList.contains('hide') && classList.remove("hide");
+    state === 'failed' ? displayFailed() : displaySucceed();
   }
+}
+
+function displaySucceed() {
+  const startDom = document.getElementById('succeed-start');
+  const { classList } = startDom.parentNode;
+  classList.contains('hide') && classList.remove("hide");
+}
+
+function displayFailed() {
+  const startDom = document.getElementById('failed-start');
+  const { classList } = startDom.parentNode;
+  classList.contains('hide') && classList.remove("hide");
 }
