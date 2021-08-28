@@ -82,7 +82,7 @@ function animate(gapTime) {
       y: item.quadraticEndY
     })
   });
-  gameStarted && fishManager.update()
+  gameStarted && fishManager.update(seaClarity)
   trashs.draw(gapTime);
   robot.draw(gapTime, { mouseX, mouseY });
   robot.collectTrashs();
