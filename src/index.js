@@ -84,7 +84,7 @@ function animate(gapTime) {
     })
   });
 
-  (gameStarted || ['succeed'].includes(state)) && fishManager.update()
+  (gameStarted || ['succeed'].includes(state)) && fishManager.update(seaClarity);
 
   trashs.draw(gapTime);
   (gameStarted || ['failed', 'succeed'].includes(state)) && progressBar.draw(seaClarity / 100);
