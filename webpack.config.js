@@ -8,11 +8,19 @@ const config = {
   entry: './src/index.js',
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, './docs'),
   },
 
   module: {
     rules: [
+      {
+        test: /\.(mp3)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          }
+        ]
+      },
       {
         test: /\.(png|jpg|gif|svg|jpeg)$/,
         use: [
