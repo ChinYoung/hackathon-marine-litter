@@ -193,5 +193,7 @@ function addBackgroundSound() {
   audioElm2 = document.getElementById("audio2");
   audioElm.src = sound;
   audioElm2.src = sound2;
+  audioElm.volume = 0.8;
+  audioElm2.volume = 0.7;
   return { audioElm, audioElm2 };
 }
