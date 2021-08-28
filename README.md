@@ -25,7 +25,7 @@
 - ✅ 清澈度进度条0-100 (addy)
 - ✅ 清澈度相关参数调整 (leo, qingyang, addy)
 - 海底音乐 (leo)
-- 发布到服务器 (leo)
+- ✅ 发布到服务器 (leo)
 - good, perfect, excellect 回馈词
 - 天空背景是否随暗沉下来，当失败
 
