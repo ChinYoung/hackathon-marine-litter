@@ -1,13 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
 
-const { NODE_ENV } = process.env;
+const devMode = process.env.NODE_ENV !== "production";
 
 const config = {
-  mode: NODE_ENV === 'production' ? 'production' : 'development',
+  mode: !devMode ? 'production' : 'development',
   entry: './src/index.js',
   output: {
-    filename: 'index.js',
+    filename: 'index.[contenthash].js',
     path: path.resolve(__dirname, './docs'),
   },
 
@@ -38,7 +39,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: [devMode ? "style-loader" : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       }
     ]
   },
@@ -48,7 +49,9 @@ const config = {
       filename: "index.html",
       template: "./index.html"
     })
-  ]
+  ].concat(devMode ? [] : [new MiniCssExtractPlugin({
+    filename: "[name].[contenthash].css"
+  })])
 }
 
 module.exports = config;

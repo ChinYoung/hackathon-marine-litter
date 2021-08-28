@@ -159,6 +159,14 @@ class Trashs {
     return this.list;
   }
 
+  getDroping() {
+    const dropingTrashs = this.list.filter(item => {
+      return item.status === 'droping';
+    });
+
+    return dropingTrashs;
+  }
+
   setList(list) {
     this.list = list;
   }

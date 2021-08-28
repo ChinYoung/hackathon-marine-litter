@@ -47,6 +47,7 @@ window.onload = init;
 function init() {
   const { audioElm, audioElm2 } = addBackgroundSound();
   const canvas = document.getElementById('canvas');
+
   const ctx = canvas.getContext('2d');
 
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
@@ -140,6 +141,11 @@ function addEvent(canvas, { audioElm, audioElm2 }) {
     startDomOnSucceed.parentNode.classList.add("hide");
     startGame();
   }
+
+  const recordBtn = document.getElementById('record');
+  recordBtn.onclick = () => {
+    downloadPic(canvas);
+  }
 }
 
 function startGame() {
@@ -172,9 +178,8 @@ function judge() {
     audioElm2.pause();
   }
 
-  if (seaClarity === 100) {
+  if (seaClarity === 100 && trashs.getDroping().length === 0) {
     state = 'succeed';
-    trashs.emptyDroping();
   }
 
   if (state !== 'processing' && gameStarted !== false) {
@@ -203,4 +208,19 @@ function addBackgroundSound() {
   audioElm.volume = 0.8;
   audioElm2.volume = 0.7;
   return { audioElm, audioElm2 };
+}
+
+function downloadPic(canvas) {
+  const fileName = `beautiful_ocean_${Math.random() * 100}.jpg`;
+  if (window.navigator.msSaveBlob) {
+    const blob = canvas.msToBlob();
+    window.navigator.msSaveBlob(blob, fileName);
+  } else {
+    const dataImg = new Image()
+    dataImg.src = canvas.toDataURL('image/png')
+    var alink = document.createElement("a");
+    alink.href = dataImg.src;
+    alink.download = fileName;
+    alink.click();
+  }
 }
