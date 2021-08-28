@@ -135,6 +135,7 @@ class Trashs {
 
   initTrashs() {
     const { ctx, canvasHeight, canvasWidth, airRate } = this;
+    // this.list.find(item => item.status === 'static');
 
     Array(5).fill(0).forEach(() => {
       const trash = new Trash().init(ctx, { canvasHeight, canvasWidth }, 'static');

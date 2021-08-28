@@ -25,7 +25,9 @@
 - ✅ 输赢裁判系统 (addy)
 - ✅ 清澈度进度条0-100 (addy)
 - 清澈度相关参数调整 (leo, qingyang, addy)
-- 海底音乐
+- 海底音乐 (leo)
+- 发布到服务器 (leo)
+- good, perfect, excellect 回馈词
 
 ### 草图
 ![](./demands/draft_08.23.jpeg)
@@ -35,13 +37,13 @@
 #### 8/28 
 (1) Complete and optimise details.
 
-(2) Commit own code to the offical repository.
+(2) At 11:00, call a meeting to decide whether we should go to office.
 
-(3) At 11:00, call a meeting to decide whether we should go to office.
-
-(4) At 17:00, call a meeting to check the PPT, and give some advice if having.
+(3) At 17:00, call a meeting to check the PPT, and give some advice if having.
 
 #### 8/29 
 (1) check PPT again and give a mock presentation Forenoon.
 
-(2) have a persentation Afternoon.
+(2) Commit own code to the offical repository.
+
+(3) have a persentation Afternoon.
