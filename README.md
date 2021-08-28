@@ -11,7 +11,7 @@
 - ✅ 手 (addy)
 - 对话框 (addy)
 - ✅ 机器人 (addy)
-- 鱼群 (qingyang)
+- ✅ 鱼群 (qingyang)
 
 - ✅ 垃圾悬停 (addy)
 - ✅ 垃圾抛物线 (addy)
@@ -19,12 +19,11 @@
 - 垃圾拿回去 (addy)
 - ✅ 蓝天，白云背景 (leo)
 - ✅ 初始化垃圾 (addy)
-- 水质  (leo)
-- 海水圈渐变 （leo）
+- ✅ 水质  (leo)
 
 - ✅ 输赢裁判系统 (addy)
 - ✅ 清澈度进度条0-100 (addy)
-- 清澈度相关参数调整 (leo, qingyang, addy)
+- ✅ 清澈度相关参数调整 (leo, qingyang, addy)
 - 海底音乐 (leo)
 - 发布到服务器 (leo)
 - good, perfect, excellect 回馈词
