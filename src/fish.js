@@ -97,6 +97,9 @@ export class FishManager {
     this.enableDebug = enableDebug || false
 
     this.hasSponge = false
+
+    // 海绵宝宝阈值
+    this.spongeBobThreshold = 75
   }
 
   // 根据环境系数调整数值
@@ -121,10 +124,18 @@ export class FishManager {
         '添加鱼群间隔计数器:', this.addFishGroupCounter
       );
     }
+    // 环境低于阈值, 海绵宝宝先跑
+    if (env < this.spongeBobThreshold) {
+      this.fishList.forEach(fish => {
+        if (fish.isSponge) {
+          fish.flee()
+        }
+      })
+    }
     if (this.fishList.length < this.maxFishCount) {
       this.addFish(env)
     } else {
-      this.reduceFish()
+      this.reduceFish(env)
     }
     if (this.fishGroupList.length < this.maxFishGroupCount) {
       this.addFishGroup()
@@ -133,29 +144,21 @@ export class FishManager {
     }
   }
 
-  reduceFish() {
+  reduceFish(env) {
+    // 水质变差， 鱼过多，跑一批
     const gap = this.fishList.length - this.maxFishCount
     if (gap > 0) {
       let fleed = 0
       this.fishList.forEach(fish => {
-        // 海绵宝宝先跑
-        if (fish instanceof SpongeBob) {
-          const result = fish.flee()
-          if (result) {
-            fleed += 1
+        if (!fish.isSponge) {
+          if (fleed < gap) {
+            const result = fish.flee()
+            if (result) {
+              fleed += 1
+            }
           }
         }
       })
-      let curFish
-      for (let i = 0; i < this.fishList.length; i++) {
-        if (fleed < gap) {
-          curFish = this.fishList[i]
-          const result = curFish.flee()
-          if (result) {
-            fleed += 1
-          }
-        }
-      }
     }
   }
   reduceFishGroup() {
@@ -194,7 +197,7 @@ export class FishManager {
     const { image: fishImage, scale } = fishImageConfig
     const spongeRandom = Math.random()
     let newFish
-    if (env > 75 && spongeRandom * 100 > 40 && !this.hasSponge) {
+    if (env > this.spongeBobThreshold && spongeRandom * 100 > 40 && !this.hasSponge) {
       newFish = new SpongeBob({ image: fishImage, direction, initX, initY, speedX, speedY, scale, enableRandom: true, canvasHeight, canvasWidth })
       this.hasSponge = true
     } else {
@@ -427,10 +430,11 @@ export class Fish {
 
 export class SpongeBob extends Fish {
   constructor({ direction, initX, initY, speedX, speedY, canvasWidth, canvasHeight }) {
-    super({ image: spongeBobImages[0], direction, initX, initY, speedX: 0.5, speedY: 1, scale: 0.4, enableRandom: true, canvasWidth, canvasHeight })
+    super({ image: spongeBobImages[0], direction, initX, initY, speedX: 0.2, speedY: 0.7, scale: 0.4, enableRandom: true, canvasWidth, canvasHeight })
     this.imageCounter = 0
     this.imageIndex = 0
-    this.fleeSpeed = 8
+    this.fleeSpeed = 5
+    this.isSponge = true
   }
 
   changeImage() {
@@ -446,6 +450,13 @@ export class SpongeBob extends Fish {
   draw(context) {
     this.move()
     this.changeImage()
-    context.drawImage(this.image, this.x, this.y, this.width * this.scale, this.height * this.scale);
+    if (!this.isInFlee) {
+      context.drawImage(this.image, this.x, this.y, this.width * this.scale, this.height * this.scale);
+    }
+    if (this.isInFlee) {
+      context.drawImage(spongeBobImages[0], this.x, this.y, this.width * this.scale, this.height * this.scale);
+      context.fillStyle = 'white'
+      context.fillText('I hate trash', this.x + 50, this.y - 10)
+    }
   }
 }
