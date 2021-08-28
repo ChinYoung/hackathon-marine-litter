@@ -87,7 +87,8 @@ class Waves {
 
   draw(seaClarity, stopWaving) {
     const { ctx } = this;
-    let seaColors = ["#2b4e54", "#5b929c", "#6299a3", "#7cc3cf", "#7fcddb", "#91e3f2", "#7fe8fa"];
+    let seaColors_1 = ["#296173","#317187 ", "#39859e", "#4196b3", "#48a7c7", "#53bde0", "#5acef5"];
+    let seaColors_2 = ["#2b4e54","#5b929c", "#6299a3", "#7cc3cf", "#7fcddb", "#91e3f2", "#4169E1"];
     let level = Math.floor(5 * seaClarity / 100);
     if (level < 0) {
       level = 0;
@@ -106,7 +107,7 @@ class Waves {
     this.wave2.draw(ctx);
     this.wave1.update({
       nowRange: this.rangeValue,
-      colors: [seaColors[level + 1], seaColors[level]],
+      colors: [seaColors_1[level + 1], seaColors_2[level]],
       stopWaving
     });
     this.wave1.draw(ctx);
