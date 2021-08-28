@@ -1,5 +1,6 @@
 
 import './css/index.scss';
+import sound from './sounds/bgm-1.mp3';
 import { setRequestAnimFrame } from './helper';
 import Waves from './waves';
 import Hands from './hands';
@@ -21,6 +22,8 @@ let mouseY = 0;
 let gameStarted = false;
 let seaClarity = 100;
 let state = 'processing';
+let audioElm;
+let audioElm2;
 
 const waves = new Waves();
 const trashs = new Trashs();
@@ -36,6 +39,7 @@ let fishManager
 window.onload = init;
 
 function init() {
+  const { audioElm, audioElm2 } = addBackgroundSound();
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
 
@@ -55,7 +59,7 @@ function init() {
 
   loopDraw(ctx, { canvasWidth, canvasHeight });
 
-  addEvent(canvas);
+  addEvent(canvas, { audioElm, audioElm2 });
 }
 
 function loopDraw(ctx, { canvasWidth, canvasHeight }) {
@@ -103,7 +107,7 @@ function initCanvas(canvas) {
 }
 
 // 添加事件
-function addEvent(canvas) {
+function addEvent(canvas, { audioElm, audioElm2 }) {
   canvas.addEventListener('mousemove', handleMousemove, false);
   canvas.addEventListener('touchmove', handleTouchmove, false);
 
@@ -111,12 +115,16 @@ function addEvent(canvas) {
   startDom.onclick = () => {
     startDom.parentNode.classList.add("hide");
     startGame()
+    audioElm.play();
+    audioElm2.play();
   }
 
   const startDomOnFailed = document.getElementById('failed-start');
   startDomOnFailed.onclick = () => {
     startDomOnFailed.parentNode.classList.add("hide");
     startGame();
+    audioElm.play();
+    audioElm2.play();
   }
 
   const startDomOnSucceed = document.getElementById('succeed-start');
@@ -152,6 +160,8 @@ function refreshClarity() {
 function judge() {
   if (seaClarity === 0) {
     state = 'failed';
+    audioElm.pause();
+    audioElm2.pause();
   }
 
   if (seaClarity === 100) {
@@ -175,4 +185,12 @@ function displayFailed() {
   const startDom = document.getElementById('failed-start');
   const { classList } = startDom.parentNode;
   classList.contains('hide') && classList.remove("hide");
+}
+
+function addBackgroundSound() {
+  audioElm = document.getElementById("audio");
+  audioElm2 = document.getElementById("audio2");
+  audioElm.src = sound;
+  audioElm2.src = sound;
+  return { audioElm, audioElm2 };
 }
