@@ -84,11 +84,11 @@ function animate(gapTime) {
   });
   gameStarted && fishManager.update()
   trashs.draw(gapTime);
+  gameStarted && progressBar.draw(seaClarity / 100);
   robot.draw(gapTime, { mouseX, mouseY });
   robot.collectTrashs();
   dusts.draw();
   bubbles.draw(bubblePointList);
-  gameStarted && progressBar.draw(seaClarity / 100);
 }
 
 function initCanvas(canvas) {
@@ -137,7 +137,8 @@ function judge() {
   }
 
   if (seaClarity === 100) {
-    state = 'succeed'
+    state = 'succeed';
+    trashs.emptyDroping();
   }
 
   if (state !== 'processing' && gameStarted !== false) {
