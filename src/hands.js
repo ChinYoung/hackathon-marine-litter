@@ -128,7 +128,6 @@ class Hands {
     this.canvasWidth = canvasWidth;
 
     const { list, handTypes } = this;
-    // const { length } = list;
     const leftHandCount = Math.round(count / 2);
     const rightHandCount = Math.floor(count / 2);
     for (let i = 0; i < leftHandCount; i++) {
@@ -147,7 +146,6 @@ class Hands {
 
   calculateSpeedAndPeriod(seaClarity) {
     const nextSpeed = 0.8 - (seaClarity / 100 * 0.7622);
-    // console.log(seaClarity, nextSpeed);
     const nextPeroid = 100 + seaClarity / 100 * 5900;
 
     return { nextSpeed, nextPeroid };

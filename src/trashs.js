@@ -52,6 +52,7 @@ class Trash {
     this.canvasHeight = canvasHeight;
     this.canvasWidth = canvasWidth;
     this.status = status;
+    this.hoverArea = 50 + Math.random() * canvasHeight * 0.45;
 
     const imageIndex = Math.round(Math.random() * 100) % 3;
     this.imageProperty = types[imageIndex];
