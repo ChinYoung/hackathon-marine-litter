@@ -144,6 +144,8 @@ function addEvent(canvas, { audioElm, audioElm2 }) {
 
   const recordBtn = document.getElementById('record');
   recordBtn.onclick = () => {
+    // clean progress bar, so the saved picture doesn't contain progress bar
+    // progressBar.setDisplay(0);
     downloadPic(canvas);
   }
 }
