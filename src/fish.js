@@ -1,5 +1,7 @@
 import lFishImage from "./images/lfish.png";
 import rFishImage from "./images/rfish.png";
+import rFishImage2 from "./images/rfish2.png";
+import rFishImage3 from "./images/rfish3.png";
 
 const LEFT = 'left'
 const RIGHT = 'right'
@@ -9,9 +11,20 @@ lFishImageInstance.src = lFishImage
 
 const rFishImageInstance = new Image()
 rFishImageInstance.src = rFishImage
+
+const rFishImageInstance2 = new Image()
+rFishImageInstance2.src = rFishImage2
+
+const rFishImageInstance3 = new Image()
+rFishImageInstance3.src = rFishImage3
+
 const imageMap = {
-  left: lFishImageInstance,
-  right: rFishImageInstance
+  left: [lFishImageInstance],
+  right: [
+    { image: rFishImageInstance, scale: 0.03 },
+    { image: rFishImageInstance2, scale: 0.1 },
+    { image: rFishImageInstance3, scale: 0.1 }
+  ]
 }
 
 const configMap = {
@@ -112,6 +125,14 @@ export class FishManager {
     }
   }
 
+  getFishImage(direction) {
+    const imageList = imageMap[direction]
+    console.log("🚀 ~ file: fish.js ~ line 126 ~ FishManager ~ getFishImage ~ imageList", imageList)
+    const randomIndex = parseInt(Math.random() * 10) % (imageList.length)
+    console.log("🚀 ~ file: fish.js ~ line 127 ~ FishManager ~ getFishImage ~ randomIndex", randomIndex)
+    return imageList[randomIndex]
+  }
+
   // 添加鱼
   addFish() {
     const randomValue = Math.random() * 10000
@@ -120,8 +141,9 @@ export class FishManager {
     }
     const config = this.randomFishConfig()
     const { canvasWidth, canvasHeight } = this
-    const { direction, initX, initY, speedX, speedY, scale } = config
-    const fishImage = imageMap[direction]
+    const { direction, initX, initY, speedX, speedY } = config
+    const fishImageConfig = this.getFishImage(direction)
+    const { image: fishImage, scale } = fishImageConfig
     const newFish = new Fish({ image: fishImage, direction, initX, initY, speedX, speedY, scale, enableRandom: true })
     this.fishList.push(newFish)
   }
@@ -134,7 +156,10 @@ export class FishManager {
       return false
     }
     const randomCount = parseInt((Math.random() + 0.5) * this.groupFishNumber)
+    const fishImageConfig = this.getFishImage(RIGHT)
+    const { image: fishImage, scale } = imageMap[RIGHT][0]
     const newFishGroup = new FishGroup({
+      fishImage,
       count: randomCount,
       canvasHeight: this.canvasHeight,
       canvasWidth: this.canvasWidth,
@@ -204,8 +229,8 @@ export class FishManager {
 
 // 鱼群
 export class FishGroup {
-  constructor({ count, scale, speedX, direction, canvasWidth, canvasHeight }) {
-    this.fishImage = imageMap[direction]
+  constructor({ fishImage, count, scale, speedX, direction, canvasWidth, canvasHeight }) {
+    this.fishImage = fishImage
     this.fishWidth = this.fishImage.width * scale
     this.fishHeight = this.fishImage.height * scale
 
