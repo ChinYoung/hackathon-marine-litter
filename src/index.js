@@ -18,11 +18,13 @@ import Box from './box';
 setRequestAnimFrame();
 const oceanDeepth = 70;
 const airRate = 30;
+const initialTrashNum = 10;
+const qualityValuePerTrash = 2;
 
 let mouseX = 0;
 let mouseY = 0;
 let gameStarted = false;
-let seaClarity = 40;
+let seaClarity = 100 - initialTrashNum * qualityValuePerTrash;
 let state = 'processing';
 let audioElm;
 let audioElm2;
@@ -52,7 +54,7 @@ function init() {
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth }, seaClarity);
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
-  trashs.init(ctx, { canvasWidth, canvasHeight, airRate });
+  trashs.init(ctx, { canvasWidth, canvasHeight, airRate }, initialTrashNum);
   dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   bubbles.init(ctx, kelps.kelpList, oceanDeepth);
   box.init(ctx, { canvasWidth, canvasHeight, seaClarity });
@@ -81,7 +83,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 
 function animate(gapTime) {
   background.draw();
-  box.draw(seaClarity,gapTime);
+  box.draw(seaClarity, gapTime);
   waves.draw(seaClarity, state === 'failed');
   gameStarted && hands.draw(gapTime, seaClarity);
   let bubblePointList = [];
@@ -141,10 +143,10 @@ function addEvent(canvas, { audioElm, audioElm2 }) {
 
 function startGame() {
   gameStarted = true;
-  seaClarity = 100;
+  seaClarity = 100 - initialTrashNum * qualityValuePerTrash;
   state = 'processing';
   trashs.empty();
-  trashs.initTrashs();
+  trashs.initTrashs(initialTrashNum);
 }
 
 function handleMousemove(e) {
@@ -158,7 +160,7 @@ function handleTouchmove(e) {
 }
 
 function refreshClarity() {
-  seaClarity = 100 - 2 * trashs.getTrashCountInOcean();
+  seaClarity = 100 - qualityValuePerTrash * trashs.getTrashCountInOcean();
   seaClarity = seaClarity < 0 ? 0 : seaClarity;
 }
 

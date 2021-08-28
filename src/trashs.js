@@ -125,21 +125,21 @@ class Trash {
 class Trashs {
   list = [];
 
-  init(ctx, { canvasWidth, canvasHeight, airRate }) {
+  init(ctx, { canvasWidth, canvasHeight, airRate }, initTrashNum) {
     this.ctx = ctx;
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.airRate = airRate;
-    this.initTrashs();
+    this.initTrashs(initTrashNum);
   }
 
-  initTrashs() {
+  initTrashs(initTrashNum) {
     const { ctx, canvasHeight, canvasWidth, airRate } = this;
 
     const hadInited = !!this.list.find(item => item.status === 'static');
     if (hadInited) return;
 
-    Array(5).fill(0).forEach(() => {
+    Array(initTrashNum).fill(0).forEach(() => {
       const trash = new Trash().init(ctx, { canvasHeight, canvasWidth }, 'static');
       const { imageWidth, imageHeight, scale } = trash.imageProperty;
       const x = (canvasWidth - imageWidth * scale) * (1 - Math.random());

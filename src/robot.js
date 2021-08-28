@@ -30,9 +30,9 @@ class Robot {
     this.x = 0;
     this.y = canvasHeight * (100 - oceanDeepth) / 100;
     this.minY = canvasHeight * (1 - oceanDeepth / 100);
-    this.maxY = canvasHeight - 188 * 0.5;
+    this.maxY = canvasHeight - 188 * 0.4;
     this.minX = 0;
-    this.maxX = canvasWidth - 170 * 0.5;
+    this.maxX = canvasWidth - 170 * 0.4;
 
     for (let i = 1; i < 3; i++) {
       const img = new Image();
@@ -52,8 +52,8 @@ class Robot {
     ctx.save();
     let betaAngle = Math.atan2(this.y - mouseY, this.x - mouseX);
     this.angle = lerpAngle(betaAngle, this.angle, 0.6);
-    this.x = lerpDistance(mouseX, this.x, 0.9);
-    this.y = lerpDistance(mouseY, this.y, 0.9);
+    this.x = lerpDistance(mouseX, this.x, 0.99);
+    this.y = lerpDistance(mouseY, this.y, 0.99);
 
     this.x = this.x < this.minX ? this.minX : this.x;
     this.x = this.x > this.maxX ? this.maxX : this.x;

@@ -27,7 +27,7 @@
 - ✅ 清澈度相关参数调整 (leo, qingyang, addy)
 - ✅ 海底音乐 (leo, addy)
 - ✅ 发布到服务器 (leo)
-- good, perfect, excellect 回馈词 (qingyang)
+- ✅ good, perfect, excellect 回馈词 (qingyang)
 
 ### 草图
 

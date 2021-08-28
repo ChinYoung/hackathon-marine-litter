@@ -141,18 +141,16 @@ class Hands {
   }
 
   calculateSpeedAndPeriod(seaClarity) {
-    const nextSpeed = 0.4 - (seaClarity / 1000);
-    const nextPeroid = 1000 + 1000 * seaClarity / 100;
+    const nextSpeed = 0.8 - (seaClarity / 100 * 0.7622);
+    // console.log(seaClarity, nextSpeed);
+    const nextPeroid = 100 + seaClarity / 100 * 5900;
 
     return { nextSpeed, nextPeroid };
   }
 
   draw(gapTime, seaClarity) {
     const { list } = this;
-
-    console.log(seaClarity);
     const { nextPeroid, nextSpeed } = this.calculateSpeedAndPeriod(seaClarity);
-    console.log(nextSpeed, nextPeroid);
     list.forEach(item => {
       item.update({ nextSpeed, nextPeroid });
       item.draw(gapTime)

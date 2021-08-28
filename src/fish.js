@@ -128,7 +128,7 @@ export class FishManager {
     if (env < this.spongeBobThreshold) {
       this.fishList.forEach(fish => {
         if (fish.isSponge) {
-          fish.flee()
+          fish.flee(null, true)
         }
       })
     }
@@ -401,19 +401,19 @@ export class Fish {
     this.y += (this.speedY * this.yDirection)
   }
 
-  flee(speed, groupFlee) {
-    if (!groupFlee && (this.direction === RIGHT)) {
+  flee(speed, forceFlee) {
+    if (!forceFlee && (this.direction === RIGHT)) {
       if (this.x < this.canvasWidth * 0.1) {
         return false
       }
     }
-    if (!groupFlee && (this.direction === LEFT)) {
+    if (!forceFlee && (this.direction === LEFT)) {
       if (this.x > this.canvasWidth * 0.9) {
         return false
       }
     }
     if (!this.isInFlee) {
-      if (!groupFlee) {
+      if (!forceFlee) {
         console.log('flee flee');
       }
       this.currentSpeedX = speed || this.fleeSpeed || this.currentSpeedX * 6
@@ -430,10 +430,10 @@ export class Fish {
 
 export class SpongeBob extends Fish {
   constructor({ direction, initX, initY, speedX, speedY, canvasWidth, canvasHeight }) {
-    super({ image: spongeBobImages[0], direction, initX, initY, speedX: 0.2, speedY: 0.7, scale: 0.4, enableRandom: true, canvasWidth, canvasHeight })
+    super({ image: spongeBobImages[0], direction, initX, initY, speedX: 0.3, speedY: 0.7, scale: 0.4, enableRandom: true, canvasWidth, canvasHeight })
     this.imageCounter = 0
     this.imageIndex = 0
-    this.fleeSpeed = 5
+    this.fleeSpeed = 4
     this.isSponge = true
   }
 
@@ -455,8 +455,9 @@ export class SpongeBob extends Fish {
     }
     if (this.isInFlee) {
       context.drawImage(spongeBobImages[0], this.x, this.y, this.width * this.scale, this.height * this.scale);
+      context.font = "24px bold";
       context.fillStyle = 'white'
-      context.fillText('I hate trash', this.x + 50, this.y - 10)
+      context.fillText('I hate trash', this.x + 45, this.y - 5)
     }
   }
 }
