@@ -52,15 +52,15 @@ const imageMap = {
 }
 
 const configMap = {
-  100: { maxFishCount: 24, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 120, randomAddGroupGap: 100 },
-  90: { maxFishCount: 24, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 200, randomAddGroupGap: 100 },
-  80: { maxFishCount: 12, chance: 400, maxFishGroupCount: 8, groupFishNumber: 6, addGroupGap: 200, randomAddGroupGap: 100 },
-  70: { maxFishCount: 12, chance: 400, maxFishGroupCount: 4, groupFishNumber: 6, addGroupGap: 200, randomAddGroupGap: 100 },
-  60: { maxFishCount: 12, chance: 300, maxFishGroupCount: 4, groupFishNumber: 6, addGroupGap: 400, randomAddGroupGap: 100 },
-  50: { maxFishCount: 8, chance: 120, maxFishGroupCount: 4, groupFishNumber: 4, addGroupGap: 400, randomAddGroupGap: 100 },
-  40: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 4, addGroupGap: 500, randomAddGroupGap: 100 },
-  30: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 2, addGroupGap: 1000, randomAddGroupGap: 100 },
-  20: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 2, addGroupGap: 1000, randomAddGroupGap: 100 },
+  100: { maxFishCount: 18, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 120, randomAddGroupGap: 100 },
+  90: { maxFishCount: 18, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 200, randomAddGroupGap: 100 },
+  80: { maxFishCount: 10, chance: 400, maxFishGroupCount: 8, groupFishNumber: 5, addGroupGap: 200, randomAddGroupGap: 100 },
+  70: { maxFishCount: 10, chance: 400, maxFishGroupCount: 4, groupFishNumber: 5, addGroupGap: 200, randomAddGroupGap: 100 },
+  60: { maxFishCount: 6, chance: 300, maxFishGroupCount: 4, groupFishNumber: 5, addGroupGap: 400, randomAddGroupGap: 100 },
+  50: { maxFishCount: 6, chance: 120, maxFishGroupCount: 4, groupFishNumber: 3, addGroupGap: 400, randomAddGroupGap: 100 },
+  40: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 3, addGroupGap: 500, randomAddGroupGap: 100 },
+  30: { maxFishCount: 2, chance: 100, maxFishGroupCount: 0, groupFishNumber: 0, addGroupGap: 1000, randomAddGroupGap: 100 },
+  20: { maxFishCount: 2, chance: 100, maxFishGroupCount: 0, groupFishNumber: 0, addGroupGap: 1000, randomAddGroupGap: 100 },
   10: { maxFishCount: 0, chance: 100, maxFishGroupCount: 0, groupFishNumber: 0, addGroupGap: 9999, randomAddGroupGap: 100 },
   0: { maxFishCount: 0, chance: 0, maxFishGroupCount: 0, groupFishNumber: 0, addGroupGap: 9999, randomAddGroupGap: 100 },
 }
