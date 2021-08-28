@@ -75,7 +75,6 @@ class Robot {
 
   // 绘制台词
   drawRobotLine() {
-    console.log("🚀 ~ file: robot.js ~ line 79 ~ Robot ~ drawRobotLine ~ this.collectedCount", this.collectedCount)
     if (!this.randomLineImage && this.collectedCount > this.triggerLineCount && this.robotLineCounter > 0) {
       this.randomLineImage = this.robotLineList[(parseInt(Math.random() * 100) % 4)]
       this.robotLineLife = 200

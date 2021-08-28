@@ -75,7 +75,6 @@ export class FishManager {
     this.canvasHeight = canvasHeight
     const initConfig = configMap[50]
     const { maxFishCount, chance, maxFishGroupCount, groupFishNumber, addGroupGap } = initConfig
-    console.log(canvasWidth, canvasHeight);
     // 最大鱼数量
     this.maxFishCount = maxFishCount
 
@@ -436,7 +435,6 @@ export class SpongeBob extends Fish {
 
   changeImage() {
     if ((this.imageCounter % 15) === 0) {
-      console.log('change');
       this.image = spongeBobImages[(this.imageIndex % 7)]
       this.imageIndex += 1
       this.imageIndex = this.imageIndex > 7 ? 0 : this.imageIndex
