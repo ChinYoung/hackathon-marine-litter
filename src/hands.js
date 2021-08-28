@@ -65,7 +65,7 @@ class Hand {
   }
 
   draw(gapTime) {
-    const { ctx, image, x, y, positionY, imageScale, rotate, peroid, canvasWidth, canvasHeight } = this;
+    const { ctx, image, x, y, positionY, imageScale, rotate, peroid, canvasWidth, canvasHeight, airRate } = this;
     this.timer += gapTime;
     if (this.timer < peroid) {
       return false;
@@ -75,7 +75,7 @@ class Hand {
       this.positionY = 0;
       this.reachOut = false;
       this.timer = 0;
-      this.trash = new Trash().init(ctx, { rotate, canvasHeight, canvasWidth });
+      this.trash = new Trash().init(ctx, { rotate, canvasHeight, canvasWidth }, 'takeout');
       this.trashs.addTrash(this.trash);
     }
 

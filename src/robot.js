@@ -16,8 +16,8 @@ class Robot {
 
   init(ctx, { canvasWidth, canvasHeight, oceanDeepth }) {
     this.ctx = ctx;
-    this.x = canvasWidth / 2;
-    this.y = canvasHeight * (100 - oceanDeepth / 2) / 100;
+    this.x = 0;
+    this.y = canvasHeight * (100 - oceanDeepth) / 100;
     this.minY = canvasHeight * (1 - oceanDeepth / 100);
     this.maxY = canvasHeight - 188 * 0.5;
     this.minX = 0;

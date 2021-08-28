@@ -10,6 +10,7 @@ import { FishManager } from './fish';
 import Dusts from './dusts';
 import Bubbles from './bubbles';
 import Background from './background';
+import ProgressBar from './progress-bar';
 
 setRequestAnimFrame();
 const oceanDeepth = 70;
@@ -28,6 +29,7 @@ const kelps = new Kelps();
 const dusts = new Dusts();
 const bubbles = new Bubbles();
 const background = new Background();
+const progressBar = new ProgressBar();
 let fishManager
 
 window.onload = init;
@@ -42,10 +44,11 @@ function init() {
   hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
-  trashs.init({ canvasWidth, canvasHeight });
+  trashs.init(ctx, { canvasWidth, canvasHeight, airRate });
   dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   bubbles.init(ctx, kelps.kelpList, oceanDeepth);
   background.init(ctx, { canvasWidth, canvasHeight, airRate });
+  progressBar.init(ctx, { x: 0, y: airRate / 100 * canvasHeight + 15 });
 
   fishManager = new FishManager(ctx, canvasWidth, canvasHeight)
 
@@ -63,6 +66,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
   window.gapTime = gapTime;
   animate(gapTime);
   refreshClarity();
+  judge();
   window.requestAnimationFrame(() => loopDraw(ctx, { canvasWidth, canvasHeight }));
 }
 
@@ -80,6 +84,7 @@ function animate(gapTime) {
   });
   gameStarted && fishManager.update()
   trashs.draw(gapTime);
+  gameStarted && progressBar.draw(seaClarity / 100);
   robot.draw(gapTime, { mouseX, mouseY });
   robot.collectTrashs();
   dusts.draw();
@@ -103,6 +108,9 @@ function addEvent(canvas) {
   startDom.onclick = () => {
     startDom.parentNode.classList.add("hide");
     gameStarted = true;
+    seaClarity = 100;
+    trashs.empty();
+    trashs.initTrashs();
   }
 }
 
@@ -116,6 +124,27 @@ function handleTouchmove(e) {
   mouseY = e.touches[0].pageY;
 }
 
-function refreshClarity(){
-  seaClarity = 100 - 5 * trashs.getList().length;
+function refreshClarity() {
+  seaClarity = 100 - 5 * trashs.getTrashCountInOcean();
+  seaClarity = seaClarity < 0 ? 0 : seaClarity;
+}
+
+function judge() {
+  let state = 'processing';
+
+  if (seaClarity === 0) {
+    state = 'failed';
+  }
+
+  if (seaClarity === 100) {
+    state = 'succeed';
+    trashs.emptyDroping();
+  }
+
+  if (state !== 'processing' && gameStarted !== false) {
+    gameStarted = false;
+    const startDom = document.getElementById('start');
+    const { classList } = startDom.parentNode;
+    classList.contains('hide') && classList.remove("hide");
+  }
 }
