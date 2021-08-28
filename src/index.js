@@ -1,6 +1,7 @@
 
 import './css/index.scss';
 import sound from './sounds/bgm-1.mp3';
+import sound2 from './sounds/bgm-2.mp3';
 import { setRequestAnimFrame } from './helper';
 import Waves from './waves';
 import Hands from './hands';
@@ -191,6 +192,6 @@ function addBackgroundSound() {
   audioElm = document.getElementById("audio");
   audioElm2 = document.getElementById("audio2");
   audioElm.src = sound;
-  audioElm2.src = sound;
+  audioElm2.src = sound2;
   return { audioElm, audioElm2 };
 }
