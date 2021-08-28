@@ -42,7 +42,7 @@ function init() {
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
 
   waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
-  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth });
+  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth }, seaClarity);
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
   trashs.init(ctx, { canvasWidth, canvasHeight, airRate });
@@ -74,7 +74,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 function animate(gapTime) {
   background.draw();
   waves.draw(seaClarity, state === 'failed');
-  gameStarted && hands.draw(gapTime);
+  gameStarted && hands.draw(gapTime, seaClarity);
   let bubblePointList = [];
   kelps.kelpList.forEach(item => {
     item.draw(state === 'failed')
@@ -84,7 +84,7 @@ function animate(gapTime) {
     })
   });
 
-  (gameStarted || ['succeed'].includes(state)) && fishManager.update(seaClarity);
+  (gameStarted || ['succeed'].includes(state)) && fishManager.update(seaClarity)
 
   trashs.draw(gapTime);
   (gameStarted || ['failed', 'succeed'].includes(state)) && progressBar.draw(seaClarity / 100);
