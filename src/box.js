@@ -7,7 +7,7 @@ class Box {
 		this.canWidth = canvasWidth;
 		this.canHeight = canvasHeight;
 		this.img = new Image();
-		this.img.src = require('./images/box-1.png').default;
+		this.img.src = require('./images/box-4.png').default;
 		this.skyHeight = this.canHeight * this.airRate / 100;
 	}
 
@@ -33,7 +33,7 @@ class Box {
 
 	drawBox() {
 		this.img.setAttribute('crossOrigin', 'anonymous');
-		this.ctx.drawImage(this.img, 150, 25, 400, 100);
+		this.ctx.drawImage(this.img, 130, -15, 440, 150);
 		this.ctx.font = '18px Helvetica';
 		this.ctx.textAlign = 'center';
 		this.ctx.fillText(this.text, 350, 75, 300);
