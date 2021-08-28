@@ -8,10 +8,21 @@ class Background {
 		this.airRate = airRate;
 		this.img.src = require('./images/sky.png').default;
 		this.skyHeight = this.canHeight * this.airRate/100;
+		this.moveCounterBase = 8000
+		this.moveCounter = 0
+		this.moveFactor = 1
+		this.bouncingPercent = 0.25
 	}
 
 	draw() {
-		this.ctx.drawImage(this.img, 0, 0, this.canWidth, this.skyHeight-10);
+		this.ctx.drawImage(this.img, this.canWidth * (-1 * 0.25 + this.moveCounter / this.moveCounterBase), 0, this.canWidth * 1.5, this.skyHeight * 1.1 - 10);
+		this.moveCounter += this.moveFactor
+		if (this.moveCounter >= this.moveCounterBase * this.bouncingPercent) {
+			this.moveFactor = -1
+		}
+		if (this.moveCounter <= -1 * this.moveCounterBase * this.bouncingPercent) {
+			this.moveFactor = 1
+		}
 	}
 }
 
