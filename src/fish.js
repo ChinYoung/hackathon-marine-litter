@@ -2,6 +2,13 @@ import lFishImage from "./images/lfish.png";
 import rFishImage from "./images/rfish.png";
 import rFishImage2 from "./images/rfish2.png";
 import rFishImage3 from "./images/rfish3.png";
+import s1 from "./images/spongeBob/s1.png";
+import s2 from "./images/spongeBob/s2.png";
+import s3 from "./images/spongeBob/s3.png";
+import s4 from "./images/spongeBob/s4.png";
+import s5 from "./images/spongeBob/s5.png";
+import s6 from "./images/spongeBob/s6.png";
+import s7 from "./images/spongeBob/s7.png";
 
 const LEFT = 'left'
 const RIGHT = 'right'
@@ -18,23 +25,40 @@ rFishImageInstance2.src = rFishImage2
 const rFishImageInstance3 = new Image()
 rFishImageInstance3.src = rFishImage3
 
+const sponge1 = new Image()
+const sponge2 = new Image()
+const sponge3 = new Image()
+const sponge4 = new Image()
+const sponge5 = new Image()
+const sponge6 = new Image()
+const sponge7 = new Image()
+sponge1.src = s1
+sponge2.src = s2
+sponge3.src = s3
+sponge4.src = s4
+sponge5.src = s5
+sponge6.src = s6
+sponge7.src = s7
+
+const spongeBobImages = [sponge1, sponge2, sponge3, sponge4, sponge5, sponge6, sponge7,]
+
 const imageMap = {
   left: [lFishImageInstance],
   right: [
     { image: rFishImageInstance, scale: 0.03 },
     { image: rFishImageInstance2, scale: 0.1 },
-    { image: rFishImageInstance3, scale: 0.05 }
+    { image: rFishImageInstance3, scale: 0.1 }
   ]
 }
 
 const configMap = {
-  100: { maxFishCount: 30, chance: 400, maxFishGroupCount: 12, groupFishNumber: 10, addGroupGap: 120, randomAddGroupGap: 100 },
-  90: { maxFishCount: 30, chance: 400, maxFishGroupCount: 12, groupFishNumber: 10, addGroupGap: 200, randomAddGroupGap: 100 },
-  80: { maxFishCount: 30, chance: 400, maxFishGroupCount: 12, groupFishNumber: 8, addGroupGap: 200, randomAddGroupGap: 100 },
-  70: { maxFishCount: 15, chance: 400, maxFishGroupCount: 6, groupFishNumber: 8, addGroupGap: 200, randomAddGroupGap: 100 },
-  60: { maxFishCount: 15, chance: 300, maxFishGroupCount: 6, groupFishNumber: 7, addGroupGap: 400, randomAddGroupGap: 100 },
-  50: { maxFishCount: 15, chance: 120, maxFishGroupCount: 3, groupFishNumber: 5, addGroupGap: 400, randomAddGroupGap: 100 },
-  40: { maxFishCount: 5, chance: 100, maxFishGroupCount: 3, groupFishNumber: 4, addGroupGap: 500, randomAddGroupGap: 100 },
+  100: { maxFishCount: 24, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 120, randomAddGroupGap: 100 },
+  90: { maxFishCount: 24, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 200, randomAddGroupGap: 100 },
+  80: { maxFishCount: 12, chance: 400, maxFishGroupCount: 8, groupFishNumber: 6, addGroupGap: 200, randomAddGroupGap: 100 },
+  70: { maxFishCount: 12, chance: 400, maxFishGroupCount: 4, groupFishNumber: 6, addGroupGap: 200, randomAddGroupGap: 100 },
+  60: { maxFishCount: 12, chance: 300, maxFishGroupCount: 4, groupFishNumber: 6, addGroupGap: 400, randomAddGroupGap: 100 },
+  50: { maxFishCount: 8, chance: 120, maxFishGroupCount: 4, groupFishNumber: 4, addGroupGap: 400, randomAddGroupGap: 100 },
+  40: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 4, addGroupGap: 500, randomAddGroupGap: 100 },
   30: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 2, addGroupGap: 1000, randomAddGroupGap: 100 },
   20: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 2, addGroupGap: 1000, randomAddGroupGap: 100 },
   10: { maxFishCount: 0, chance: 100, maxFishGroupCount: 0, groupFishNumber: 0, addGroupGap: 9999, randomAddGroupGap: 100 },
@@ -72,6 +96,8 @@ export class FishManager {
     this.addFishGroupCounter = addGroupGap
 
     this.enableDebug = enableDebug || false
+
+    this.hasSponge = false
   }
 
   // 根据环境系数调整数值
@@ -97,7 +123,7 @@ export class FishManager {
       );
     }
     if (this.fishList.length < this.maxFishCount) {
-      this.addFish()
+      this.addFish(env)
     } else {
       this.reduceFish()
     }
@@ -112,6 +138,15 @@ export class FishManager {
     const gap = this.fishList.length - this.maxFishCount
     if (gap > 0) {
       let fleed = 0
+      this.fishList.forEach(fish => {
+        // 海绵宝宝先跑
+        if (fish instanceof SpongeBob) {
+          const result = fish.flee()
+          if (result) {
+            fleed += 1
+          }
+        }
+      })
       let curFish
       for (let i = 0; i < this.fishList.length; i++) {
         if (fleed < gap) {
@@ -148,7 +183,7 @@ export class FishManager {
   }
 
   // 添加鱼
-  addFish() {
+  addFish(env) {
     const randomValue = Math.random() * 10000
     if (randomValue > this.chance) {
       return false
@@ -158,7 +193,14 @@ export class FishManager {
     const { direction, initX, initY, speedX, speedY } = config
     const fishImageConfig = this.getFishImage(direction)
     const { image: fishImage, scale } = fishImageConfig
-    const newFish = new Fish({ image: fishImage, direction, initX, initY, speedX, speedY, scale, enableRandom: true, canvasHeight, canvasWidth })
+    const spongeRandom = Math.random()
+    let newFish
+    if (env > 75 && spongeRandom * 100 > 40 && !this.hasSponge) {
+      newFish = new SpongeBob({ image: fishImage, direction, initX, initY, speedX, speedY, scale, enableRandom: true, canvasHeight, canvasWidth })
+      this.hasSponge = true
+    } else {
+      newFish = new Fish({ image: fishImage, direction, initX, initY, speedX, speedY, scale, enableRandom: true, canvasHeight, canvasWidth })
+    }
     this.fishList.push(newFish)
   }
 
@@ -217,10 +259,16 @@ export class FishManager {
     const self = this
     this.fishList = this.fishList.filter(fish => {
       if (fish.direction === LEFT && fish.x < -1 * (fish.width)) {
+        if (fish instanceof SpongeBob) {
+          this.hasSponge = false
+        }
         console.log('destory');
         return false
       }
       if (fish.direction === RIGHT && fish.x > self.canvasWidth) {
+        if (fish instanceof SpongeBob) {
+          this.hasSponge = false
+        }
         console.log('destory');
         return false
       }
@@ -231,9 +279,11 @@ export class FishManager {
       const mostLeftX = sortedXList[0]
       const mostRightX = sortedXList[sortedXList.length - 1]
       if (group.direction === RIGHT && mostLeftX > this.canvasWidth) {
+        console.log('destory group');
         return false
       }
       if (group.direction === LEFT && mostRightX < 0) {
+        console.log('destory group');
         return false
       }
       return true
@@ -304,6 +354,7 @@ export class FishGroup {
   }
 }
 
+
 // 鱼
 export class Fish {
   constructor({ image, direction, initX, initY, speedX = 0.3, speedY = 0, scale, enableRandom = false, canvasHeight, canvasWidth }) {
@@ -329,7 +380,8 @@ export class Fish {
   move() {
     if (!(this.counter % 260) && this.enableRandom && !this.isInFlee) {
       const xRandomValue = Math.random()
-      this.currentSpeedX = this.initialSpeedX + (xRandomValue < 0.5 ? xRandomValue : xRandomValue * 0.5 * -1)
+      const xRandomDirection = Math.random() > 0.5 ? 1 : -1
+      this.currentSpeedX = this.initialSpeedX + this.initialSpeedX * xRandomDirection * xRandomValue
     }
     if (!(this.counter % 150) && this.enableRandom && !this.isInFlee) {
       const yRandomValue = Math.random()
@@ -338,10 +390,13 @@ export class Fish {
       if (this.y < this.canvasHeight * 0.5) {
         this.yDirection = 1
       }
+      if ((this.y + this.height * this.scale + 20) >= this.canvasHeight) {
+        this.yDirection = -1
+      }
     }
     this.counter += 1
     this.x += (this.currentSpeedX) * (this.direction === LEFT ? -1 : 1)
-    this.y += this.speedY * this.yDirection
+    this.y += (this.speedY * this.yDirection)
   }
 
   flee(speed, groupFlee) {
@@ -367,6 +422,32 @@ export class Fish {
 
   draw(context) {
     this.move()
+    context.drawImage(this.image, this.x, this.y, this.width * this.scale, this.height * this.scale);
+  }
+}
+
+export class SpongeBob extends Fish {
+  constructor({ direction, initX, initY, speedX, speedY, canvasWidth, canvasHeight }) {
+    super({ image: spongeBobImages[0], direction, initX, initY, speedX: 0.5, speedY: 1, scale: 0.4, enableRandom: true, canvasWidth, canvasHeight })
+    this.imageCounter = 0
+    this.imageIndex = 0
+    this.fleeSpeed = 8
+  }
+
+  changeImage() {
+    if ((this.imageCounter % 15) === 0) {
+      console.log('change');
+      this.image = spongeBobImages[(this.imageIndex % 7)]
+      this.imageIndex += 1
+      this.imageIndex = this.imageIndex > 7 ? 0 : this.imageIndex
+    }
+    this.imageCounter = this.imageCounter + 1
+    this.imageCounter = this.imageCounter > 15 ? 0 : this.imageCounter
+  }
+
+  draw(context) {
+    this.move()
+    this.changeImage()
     context.drawImage(this.image, this.x, this.y, this.width * this.scale, this.height * this.scale);
   }
 }
