@@ -135,7 +135,9 @@ class Trashs {
 
   initTrashs() {
     const { ctx, canvasHeight, canvasWidth, airRate } = this;
-    // this.list.find(item => item.status === 'static');
+
+    const hadInited = !!this.list.find(item => item.status === 'static');
+    if (hadInited) return;
 
     Array(5).fill(0).forEach(() => {
       const trash = new Trash().init(ctx, { canvasHeight, canvasWidth }, 'static');
@@ -162,7 +164,7 @@ class Trashs {
 
   empty() {
     this.list = this.list.filter(item => {
-      return item.status === 'takeout';
+      return item.status === 'takeout' || item.status === 'static';
     });
   }
 

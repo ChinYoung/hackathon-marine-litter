@@ -43,13 +43,14 @@ class Wave {
   update({
     nowRange,
     colors,
+    stopWaving
   } = {}) {
     this.points = [];
     const {
       startX, waveHeight, waveWidth, canvasWidth, canvasHeight, xOffset,
     } = this;
     for (let x = startX; x < startX + canvasWidth; x += 20 / canvasWidth) {
-      const y = Math.sin(((startX + x) * waveWidth) + xOffset);
+      const y = stopWaving ? 0 : Math.sin(((startX + x) * waveWidth) + xOffset);
       const dY = canvasHeight * (1 - (nowRange / 100));
       this.points.push([x, dY + (y * waveHeight)]);
     }
@@ -84,9 +85,9 @@ class Waves {
     });
   }
 
-  draw(seaClarity) {
+  draw(seaClarity, stopWaving) {
     const { ctx } = this;
-    let seaColors = ["#2b4e54","#5b929c", "#6299a3", "#7cc3cf", "#7fcddb", "#91e3f2", "#7fe8fa"];
+    let seaColors = ["#2b4e54", "#5b929c", "#6299a3", "#7cc3cf", "#7fcddb", "#91e3f2", "#7fe8fa"];
     let level = Math.floor(5 * seaClarity / 100);
     if (level < 0) {
       level = 0;
@@ -99,12 +100,14 @@ class Waves {
     // }
     this.wave2.update({
       nowRange: this.rangeValue,
-      colors: ['rgba(100, 149, 237, 0.48)', 'rgba(65, 105, 225, 0.48)']
+      colors: ['rgba(100, 149, 237, 0.48)', 'rgba(65, 105, 225, 0.48)'],
+      stopWaving
     });
     this.wave2.draw(ctx);
     this.wave1.update({
       nowRange: this.rangeValue,
-      colors: [seaColors[level+1], seaColors[level]]
+      colors: [seaColors[level + 1], seaColors[level]],
+      stopWaving
     });
     this.wave1.draw(ctx);
   }
