@@ -20,6 +20,7 @@ const oceanDeepth = 70;
 const airRate = 30;
 const initialTrashNum = 10;
 const qualityValuePerTrash = 2;
+const noThrowThreshold = 3;
 
 let mouseX = 0;
 let mouseY = 0;
@@ -51,7 +52,7 @@ function init() {
   const { canvasWidth, canvasHeight } = initCanvas(canvas);
 
   waves.init(ctx, { canvasWidth, canvasHeight, rangeValue: oceanDeepth });
-  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth }, seaClarity);
+  hands.init(ctx, 6, { airRate, canvasHeight, canvasWidth }, seaClarity, { noThrowThreshold, qualityValuePerTrash });
   robot.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   kelps.init(ctx, { canvasWidth, canvasHeight });
   trashs.init(ctx, { canvasWidth, canvasHeight, airRate }, initialTrashNum);
