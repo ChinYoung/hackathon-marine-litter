@@ -83,7 +83,9 @@ function animate(gapTime) {
       y: item.quadraticEndY
     })
   });
+
   (gameStarted || ['succeed'].includes(state)) && fishManager.update()
+
   trashs.draw(gapTime);
   (gameStarted || ['failed', 'succeed'].includes(state)) && progressBar.draw(seaClarity / 100);
   robot.draw(gapTime, { mouseX, mouseY });
