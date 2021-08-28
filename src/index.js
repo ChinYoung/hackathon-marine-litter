@@ -20,6 +20,7 @@ let mouseX = 0;
 let mouseY = 0;
 let gameStarted = false;
 let seaClarity = 100;
+let state = 'processing';
 
 const waves = new Waves();
 const trashs = new Trashs();
@@ -84,7 +85,7 @@ function animate(gapTime) {
   });
   gameStarted && fishManager.update()
   trashs.draw(gapTime);
-  gameStarted && progressBar.draw(seaClarity / 100);
+  (gameStarted || ['failed', 'succeed'].includes(state)) && progressBar.draw(seaClarity / 100);
   robot.draw(gapTime, { mouseX, mouseY });
   robot.collectTrashs();
   dusts.draw();
@@ -130,8 +131,6 @@ function refreshClarity() {
 }
 
 function judge() {
-  let state = 'processing';
-
   if (seaClarity === 0) {
     state = 'failed';
   }

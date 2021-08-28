@@ -130,6 +130,7 @@ class Trashs {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.airRate = airRate;
+    this.initTrashs();
   }
 
   initTrashs() {
