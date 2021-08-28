@@ -13,6 +13,7 @@ import Dusts from './dusts';
 import Bubbles from './bubbles';
 import Background from './background';
 import ProgressBar from './progress-bar';
+import Box from './box';
 
 setRequestAnimFrame();
 const oceanDeepth = 70;
@@ -21,7 +22,7 @@ const airRate = 30;
 let mouseX = 0;
 let mouseY = 0;
 let gameStarted = false;
-let seaClarity = 100;
+let seaClarity = 40;
 let state = 'processing';
 let audioElm;
 let audioElm2;
@@ -35,6 +36,7 @@ const dusts = new Dusts();
 const bubbles = new Bubbles();
 const background = new Background();
 const progressBar = new ProgressBar();
+const box = new Box();
 let fishManager
 
 window.onload = init;
@@ -53,6 +55,7 @@ function init() {
   trashs.init(ctx, { canvasWidth, canvasHeight, airRate });
   dusts.init(ctx, { canvasWidth, canvasHeight, oceanDeepth });
   bubbles.init(ctx, kelps.kelpList, oceanDeepth);
+  box.init(ctx, { canvasWidth, canvasHeight, seaClarity });
   background.init(ctx, { canvasWidth, canvasHeight, airRate });
   progressBar.init(ctx, { x: 0, y: airRate / 100 * canvasHeight + 15 });
 
@@ -78,6 +81,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 
 function animate(gapTime) {
   background.draw();
+  box.draw(seaClarity,gapTime);
   waves.draw(seaClarity, state === 'failed');
   gameStarted && hands.draw(gapTime, seaClarity);
   let bubblePointList = [];

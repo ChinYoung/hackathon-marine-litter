@@ -14,6 +14,8 @@ class ProgressBar {
     ctx.fillStyle = '#FFFF00';
     ctx.strokeRect(this.x, this.y, 80, 7);
     ctx.fillRect(this.x, this.y, 80 * rate, 7);
+    ctx.font = '10px Helvetica';
+    ctx.textAlign = 'left';
     ctx.fillText("water quality", 82, this.y + 6);
     ctx.restore();
   }
