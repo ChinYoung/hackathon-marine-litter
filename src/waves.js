@@ -42,6 +42,7 @@ class Wave {
   }
   update({
     nowRange,
+    colors,
   } = {}) {
     this.points = [];
     const {
@@ -53,6 +54,7 @@ class Wave {
       this.points.push([x, dY + (y * waveHeight)]);
     }
     this.xOffset += this.speed;
+    this.colors = colors;
   }
 }
 
@@ -67,7 +69,7 @@ class Waves {
       canvasHeight, // 轴高
       waveWidth: 0.055, // 波浪宽度,数越小越宽
       waveHeight: 4, // 波浪高度,数越大越高
-      colors: ['#6495ED','#4169E1'], // 波浪颜色
+      colors: ['#6495ED', '#4169E1'], // 波浪颜色
       xOffset: 0, // 初始偏移
       speed: 0.04, // 速度
     });
@@ -82,9 +84,13 @@ class Waves {
     });
   }
 
-  draw() {
+  draw(seaClarity) {
     const { ctx } = this;
-
+    let seaColors = ["#2b4e54","#5b929c", "#6299a3", "#7cc3cf", "#7fcddb", "#91e3f2", "#7fe8fa"];
+    let level = Math.floor(5 * seaClarity / 100);
+    if (level < 0) {
+      level = 0;
+    }
     // if (this.nowRange <= this.rangeValue) {
     //   this.nowRange += 1;
     // }
@@ -93,10 +99,12 @@ class Waves {
     // }
     this.wave2.update({
       nowRange: this.rangeValue,
+      colors: ['rgba(100, 149, 237, 0.48)', 'rgba(65, 105, 225, 0.48)']
     });
     this.wave2.draw(ctx);
     this.wave1.update({
       nowRange: this.rangeValue,
+      colors: [seaColors[level+1], seaColors[level]]
     });
     this.wave1.draw(ctx);
   }

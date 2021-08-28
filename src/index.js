@@ -72,7 +72,7 @@ function loopDraw(ctx, { canvasWidth, canvasHeight }) {
 
 function animate(gapTime) {
   background.draw();
-  waves.draw();
+  waves.draw(seaClarity);
   gameStarted && hands.draw(gapTime);
   let bubblePointList = [];
   kelps.kelpList.forEach(item => {
