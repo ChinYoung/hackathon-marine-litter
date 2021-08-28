@@ -42,6 +42,6 @@
 (4) At 16:00, call a meeting to check the PPT, and give some advice if having.
 
 #### 8/29 
-(1) Forenoon, check PPT again and give a mock presentation.
+(1) check PPT again and give a mock presentation Forenoon.
 
-(2) Afternoon, have a persentation.
+(2) have a persentation Afternoon.
