@@ -18,12 +18,12 @@
 - ✅ 气泡 (leo)
 - 垃圾拿回去 (addy)
 - ✅ 蓝天，白云背景 (leo)
-- ✅ 初始化垃圾 (addy)
+- ✅ 初始化垃圾 (addy)
 - 水质  (leo)
 - 海水圈渐变 （leo）
 
-- ✅ 输赢裁判系统 (addy)
-- ✅ 清澈度进度条0-100 (addy)
+- ✅ 输赢裁判系统 (addy)
+- ✅ 清澈度进度条0-100 (addy)
 - 清澈度相关参数调整 (leo, qingyang, addy)
 - 
 
@@ -39,7 +39,7 @@
 
 (3) At 11:00, call a meeting to decide whether we should go to office.
 
-(4) At 16:00, call a meeting to check the PPT, and give some advice if having.
+(4) At 17:00, call a meeting to check the PPT, and give some advice if having.
 
 #### 8/29 
 (1) check PPT again and give a mock presentation Forenoon.
