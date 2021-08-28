@@ -450,9 +450,11 @@ export class SpongeBob extends Fish {
   draw(context) {
     this.move()
     this.changeImage()
-    context.drawImage(this.image, this.x, this.y, this.width * this.scale, this.height * this.scale);
+    if (!this.isInFlee) {
+      context.drawImage(this.image, this.x, this.y, this.width * this.scale, this.height * this.scale);
+    }
     if (this.isInFlee) {
-      console.log('draw text');
+      context.drawImage(spongeBobImages[0], this.x, this.y, this.width * this.scale, this.height * this.scale);
       context.fillStyle = 'white'
       context.fillText('I hate trash', this.x + 50, this.y - 10)
     }
