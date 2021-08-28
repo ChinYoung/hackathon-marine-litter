@@ -35,8 +35,11 @@ class Hand {
     ctx,
     { airRate, x = 0, canvasWidth, canvasHeight, rotate = 90 } = {},
     { imageX = 62, imageY = 80, rawHandWidth = 145, rawHandLength = 405 } = {},
+    { noThrowThreshold, qualityValuePerTrash }
   ) {
     this.ctx = ctx;
+    this.noThrowThreshold = noThrowThreshold;
+    this.qualityValuePerTrash = qualityValuePerTrash;
     this.imageProperty = { imageX, imageY, rawHandLength, rawHandWidth };
     // this.nextPeroid = peroid;
     // this.nextSpeed = speed;
@@ -65,7 +68,7 @@ class Hand {
     // this.y = Math.floor(Math.random() * (canvasHeight * airRate / 100 - handWidth));
   }
 
-  draw(gapTime) {
+  draw(gapTime, seaClarity) {
     const { ctx, image, x, y, positionY, imageScale, rotate, canvasWidth, canvasHeight, airRate } = this;
     this.timer += gapTime;
     if (this.peroid && this.timer < this.peroid) {
@@ -97,7 +100,9 @@ class Hand {
     if (this.positionY < -handLength) {
       this.positionY = -handLength;
       this.reachOut = true;
-      this.trash.beginDrop({ x: x === 0 ? handLength : canvasWidth - handLength, y });
+      if (seaClarity < 100 - this.noThrowThreshold * this.qualityValuePerTrash) {
+        this.trash.beginDrop({ x: x === 0 ? handLength : canvasWidth - handLength, y });
+      }
     }
   }
 }
@@ -117,7 +122,7 @@ class Hands {
     this.trashs = trashs;
   }
 
-  init(ctx, count = 10, { airRate, canvasWidth, canvasHeight }, seaClarity) {
+  init(ctx, count = 10, { airRate, canvasWidth, canvasHeight }, seaClarity, { noThrowThreshold, qualityValuePerTrash }) {
     this.airRate = airRate;
     this.canvasHeight = canvasHeight;
     this.canvasWidth = canvasWidth;
@@ -128,13 +133,13 @@ class Hands {
     const rightHandCount = Math.floor(count / 2);
     for (let i = 0; i < leftHandCount; i++) {
       const typeIndex = (Math.round(Math.random() * 10) + i) % 3;
-      const hand = new Hand(this.trashs).init(ctx, { airRate, canvasHeight, canvasWidth }, handTypes[typeIndex]);
+      const hand = new Hand(this.trashs).init(ctx, { airRate, canvasHeight, canvasWidth }, handTypes[typeIndex], { noThrowThreshold, qualityValuePerTrash });
       hand.update(this.calculateSpeedAndPeriod(seaClarity));
       list.push(hand);
     }
     for (let j = 0; j < rightHandCount; j++) {
       const typeIndex = (Math.round(Math.random() * 10) + j) % 3;
-      const hand = new Hand(this.trashs).init(ctx, { airRate, canvasHeight, canvasWidth, x: canvasWidth, rotate: -90 }, handTypes[typeIndex]);
+      const hand = new Hand(this.trashs).init(ctx, { airRate, canvasHeight, canvasWidth, x: canvasWidth, rotate: -90 }, handTypes[typeIndex], { noThrowThreshold, qualityValuePerTrash });
       hand.update(this.calculateSpeedAndPeriod(seaClarity));
       list.push(hand);
     }
@@ -153,7 +158,7 @@ class Hands {
     const { nextPeroid, nextSpeed } = this.calculateSpeedAndPeriod(seaClarity);
     list.forEach(item => {
       item.update({ nextSpeed, nextPeroid });
-      item.draw(gapTime)
+      item.draw(gapTime, seaClarity)
     });
   }
 }
