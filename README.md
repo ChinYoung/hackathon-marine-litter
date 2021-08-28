@@ -28,6 +28,7 @@
 - 海底音乐 (leo)
 - 发布到服务器 (leo)
 - good, perfect, excellect 回馈词
+- 天空背景是否随暗沉下来，当失败
 
 ### 草图
 ![](./demands/draft_08.23.jpeg)
