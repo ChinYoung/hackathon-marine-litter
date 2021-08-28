@@ -8,6 +8,17 @@ class Robot {
   curTimeset = 0;
   collectNum = 0;
 
+  // 台词列表
+  robotLineList = []
+  // 间隔时间内收集垃圾计数
+  collectedCount = 0
+  // 台词显示间隔
+  initRobotLineCount = 300
+  // 台词显示计数器
+  robotLineCounter = this.initRobotLineCount
+  // 触发台词所需收集数
+  triggerLineCount = 5
+
   trashs;
 
   constructor(trashs) {
@@ -27,6 +38,12 @@ class Robot {
       const img = new Image();
       img.src = require('./images/robot_' + i + '.png').default;
       this.imageList.push(img);
+    }
+
+    for (let i = 1; i < 5; i++) {
+      const img = new Image();
+      img.src = require('./images/robot_lines/line' + i + '.png').default;
+      this.robotLineList.push(img);
     }
   }
 
@@ -52,7 +69,35 @@ class Robot {
     // }
 
     this.ctx.drawImage(this.imageList[this.curIndex], 18, 11, 170, 188, 0, 0, 170 * 0.4, 188 * 0.4);
+    this.drawRobotLine()
     ctx.restore();
+  }
+
+  // 绘制台词
+  drawRobotLine() {
+    if (!this.randomLineImage && this.collectedCount > this.triggerLineCount && this.robotLineCounter > 0) {
+      this.randomLineImage = this.robotLineList[(parseInt(Math.random() * 100) % 4)]
+      this.robotLineLife = 200
+    }
+    if (this.randomLineImage && this.robotLineLife >= 0) {
+      const image = this.randomLineImage
+      const scale = 0.5
+      const lineWith = image.width * scale
+      const lineHeight = image.height * scale
+      this.ctx.drawImage(image, -2, -1 * lineHeight, lineWith, lineHeight)
+      this.robotLineLife -= 1
+    }
+    if (this.robotLineLife < 0) {
+      this.robotLineLife = 0
+      this.randomLineImage = null
+      this.robotLineCounter = this.initRobotLineCount
+      this.collectedCount = 0
+    }
+    if (this.robotLineCounter < 0) {
+      this.robotLineCounter = this.initRobotLineCount
+      this.collectedCount = 0
+    }
+    this.robotLineCounter -= 1
   }
 
   collectTrashs() {
@@ -63,6 +108,7 @@ class Robot {
     });
 
     this.collectNum += trashList.length - newTrashList.length;
+    this.collectedCount += (trashList.length - newTrashList.length)
     this.trashs.setList(newTrashList);
   }
 }
