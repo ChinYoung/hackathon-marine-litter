@@ -54,8 +54,8 @@ const imageMap = {
 const configMap = {
   100: { maxFishCount: 18, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 120, randomAddGroupGap: 100 },
   90: { maxFishCount: 18, chance: 400, maxFishGroupCount: 8, groupFishNumber: 8, addGroupGap: 200, randomAddGroupGap: 100 },
-  80: { maxFishCount: 10, chance: 400, maxFishGroupCount: 8, groupFishNumber: 5, addGroupGap: 200, randomAddGroupGap: 100 },
-  70: { maxFishCount: 10, chance: 400, maxFishGroupCount: 4, groupFishNumber: 5, addGroupGap: 200, randomAddGroupGap: 100 },
+  80: { maxFishCount: 16, chance: 400, maxFishGroupCount: 8, groupFishNumber: 5, addGroupGap: 200, randomAddGroupGap: 100 },
+  70: { maxFishCount: 9, chance: 400, maxFishGroupCount: 4, groupFishNumber: 5, addGroupGap: 200, randomAddGroupGap: 100 },
   60: { maxFishCount: 6, chance: 300, maxFishGroupCount: 4, groupFishNumber: 5, addGroupGap: 400, randomAddGroupGap: 100 },
   50: { maxFishCount: 6, chance: 120, maxFishGroupCount: 4, groupFishNumber: 3, addGroupGap: 400, randomAddGroupGap: 100 },
   40: { maxFishCount: 5, chance: 100, maxFishGroupCount: 1, groupFishNumber: 3, addGroupGap: 500, randomAddGroupGap: 100 },
@@ -399,6 +399,9 @@ export class Fish {
     this.counter += 1
     this.x += (this.currentSpeedX) * (this.direction === LEFT ? -1 : 1)
     this.y += (this.speedY * this.yDirection)
+    if (this.y < this.canvasHeight * 0.5) {
+      this.speedY = 0
+    }
   }
 
   flee(speed, forceFlee) {
