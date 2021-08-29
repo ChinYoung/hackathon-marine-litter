@@ -12,22 +12,29 @@ class Box {
 	}
 
 	draw(seaClarity, gapTime) {
-		if (this.lastTime <= 3000 && this.lastTime >= 0) {
-			this.lastTime = this.lastTime + gapTime;
+		// if (this.lastTime <= 3000 && this.lastTime >= 0) {
+		// 	this.lastTime = this.lastTime + gapTime;
+		// 	this.drawBox();
+		// 	if (this.lastTime >= 5000) {
+		// 		this.lastTime = -1;
+		// 	}
+		// } else {
+		// 	if (seaClarity > 90 && seaClarity < 100 && Math.random() > 0.9) {
+		// 		this.text = "The sea is too clean. I can't go on throwing rubbish away.";
+		// 		this.drawBox();
+		// 		this.lastTime = 0;
+		// 	}else if(seaClarity < 10 && seaClarity > 0 && Math.random() > 0.9){
+		// 		this.text = "The sea is so dirty, it shouldn't be a problem to throw out some trash.";
+		// 		this.drawBox();
+		// 		this.lastTime = 0;
+		// 	}
+		// }
+		if (seaClarity > 70){
+			this.text = "The sea is too clean. I can't go on throwing rubbish away.";
 			this.drawBox();
-			if (this.lastTime >= 5000) {
-				this.lastTime = -1;
-			}
-		} else {
-			if (seaClarity > 90 && seaClarity < 100 && Math.random() > 0.9) {
-				this.text = "The sea is too clean. I can't go on throwing rubbish away.";
-				this.drawBox();
-				this.lastTime = 0;
-			}else if(seaClarity < 10 && seaClarity > 0 && Math.random() > 0.9){
-				this.text = "The sea is so dirty, it shouldn't be a problem to throw out some trash.";
-				this.drawBox();
-				this.lastTime = 0;
-			}
+		}else if(seaClarity < 30){
+			this.text = "The sea is so dirty, it shouldn't be a problem to throw out some trash.";
+			this.drawBox();
 		}
 	}
 
@@ -36,6 +43,7 @@ class Box {
 		this.ctx.drawImage(this.img, 130, -15, 440, 150);
 		this.ctx.font = '18px Helvetica';
 		this.ctx.textAlign = 'center';
+		this.ctx.fillStyle = 'blue';
 		this.ctx.fillText(this.text, 350, 75, 300);
 	}
 }
