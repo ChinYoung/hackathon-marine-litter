@@ -11,7 +11,7 @@
 - ✅ 水草 (leo)
 - ✅ 垃圾 (addy)
 - ✅ 手 (addy)
-- 对话框 (leo)
+- ✅ 对话框 (leo)
 - ✅ 机器人 (addy)
 - ✅ 鱼群 (qingyang)
 
